@@ -1,12 +1,10 @@
 <?php
 
 require_once "vendor/autoload.php";
+require_once 'routes.php';
 
-use aps\router\Router;
 
-$url= $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
 
-$route = new Router($url, $method);
 
-echo $route->getMethod();
+
+

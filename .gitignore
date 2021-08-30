@@ -1,3 +1,4 @@
 /public/vendor/
 /public/composer.lock
 /public/vendor/
+/public/.htaccess

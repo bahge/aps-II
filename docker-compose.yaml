@@ -8,6 +8,7 @@ services:
     restart: always
     volumes:
       - "${APP_VOLUME}:/var/www/html/"
+      - "./.htaccess:/var/www/html/.htaccess"
     logging:
       options:
         max-size: "${LOG_SIZE}"
