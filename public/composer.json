@@ -1,5 +1,8 @@
 {
     "autoload": {
         "psr-4": {"aps\\": "src/"}
+    },
+    "require": {
+        "pecee/simple-router": "4.3.7.2"
     }
 }
