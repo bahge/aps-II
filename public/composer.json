@@ -1,5 +1,5 @@
 {
     "autoload": {
-        "psr-4": {"aps\\app\\": "src/"}
+        "psr-4": {"aps\\": "src/"}
     }
 }

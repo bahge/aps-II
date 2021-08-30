@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'aps\\app\\' => array($baseDir . '/src'),
+    'aps\\' => array($baseDir . '/src'),
 );
