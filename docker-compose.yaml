@@ -1,0 +1,64 @@
+version: "3.7"
+services:
+  app:
+    container_name: app
+    build:
+      dockerfile: php.Dockerfile
+      context: .
+    restart: always
+    volumes:
+      - "${APP_VOLUME}:/var/www/html/"
+    logging:
+      options:
+        max-size: "${LOG_SIZE}"
+        max-file: "${LOG_MAX_FILE}"
+    ports:
+      - "${APP_PORT}:80"
+    networks:
+      network_app:
+        ipv4_address: 172.1.15.2
+  
+  mysql-app:
+    image: mysql:8.0.19
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+    logging: 
+      options: 
+        max-size: "${LOG_SIZE}"
+        max-file: "${LOG_MAX_FILE}"
+    environment:
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PWD}"
+      MYSQL_PASSWORD: "${DB_PWD}"
+    networks:
+      network_app:
+        ipv4_address: 172.1.15.3
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.1
+    restart: always
+    environment:
+      PMA_HOST: "${HOST}"
+      PMA_USER: "${USER}"
+      PMA_PASSWORD: "${PWD}"
+    ports:
+      - "5000:80"
+    logging: 
+      options: 
+        max-size: "${LOG_SIZE}"
+        max-file: "${LOG_MAX_FILE}"
+    networks:
+      network_app:
+        ipv4_address: 172.1.15.5
+
+volumes:
+  mysql-data:
+
+networks:
+  network_app:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.1.15.0/24
