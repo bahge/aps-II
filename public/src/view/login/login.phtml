@@ -41,9 +41,19 @@
             login = $form.find( "input[name='login']" ).val(),
             pass = $form.find( "input[name='pass']" ).val(),
             url = $form.attr( "<?= URL . 'logar' ?>" );
-        var posting = $.post( url, { login: login, pass: pass } );
+
+        if ( (login == '') || (pass == '') ) {
+            M.toast({html: 'Login e senha devem ser preenchidos!', classes: 'rounded'});
+            return false;
+        }
+        var formData = JSON.stringify({ login: login, pass: pass });
+        var posting = $.post( url, formData);
         posting.done(function( data ) {
-            M.toast({html: data, classes: 'rounded'});
+            if (data == 1) {
+                window.location.href = '<?= URL . '/user/listar' ?>';
+            } else {
+                M.toast({html: 'Usuário e/ou senha inválidos.', classes: 'rounded'});
+            }
         });
     });
 </script>
