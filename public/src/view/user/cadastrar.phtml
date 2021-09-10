@@ -9,60 +9,87 @@
 <div class="container-fluid">
     <br>
     <div class="row">
-        <form class="col s12">
+        <form class="col s12" id="newUser">
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Digite um e-mail" id="login" type="text">
-                    <label for="login">Login</label>
+                    <input placeholder="Digite um e-mail" id="login" type="text" name="login">
+                    <label for="login">Login *</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6">
-                    <input placeholder="*********" id="pass_01" type="password">
-                    <label for="pass_01">Senha</label>
+                    <input placeholder="*********" id="pass_01" type="password" name="pass">
+                    <label for="pass_01">Senha *</label>
                 </div>
                 <div class="input-field col s6">
                     <input placeholder="*********" id="pass_02" type="password">
-                    <label for="pass_02">Senha</label>
+                    <label for="pass_02">Senha *</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Digite seu CPF" id="cpf" type="text">
-                    <label for="cpf">CPF</label>
+                    <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf">
+                    <label for="cpf">CPF *</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select>
+                    <select id="area" name="area">
                         <option value="" disabled selected>Escolha uma área de interesse</option>
                         <option value="1">Option 1</option>
                         <option value="2">Option 2</option>
                         <option value="3">Option 3</option>
                     </select>
-                    <label>Área de Interesse</label>
+                    <label>Área de Interesse *</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Como deseja ser chamado" id="name" type="text">
-                    <label for="name">Nome</label>
+                    <input placeholder="Como deseja ser chamado" id="name" type="text" name="name">
+                    <label for="name">Nome *</label>
                 </div>
             </div>
-            <p class="right-align"><a class="waves-effect waves-light btn">Cadastrar</a></p>
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
         </form>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems, options);
-    });
-
-    // Or with jQuery
-
     $(document).ready(function(){
         $('select').formSelect();
+    });
+
+    $ ("#pass_02").focusout(function () {
+        if ( $ ("#pass_01").val() !== $ ("#pass_02").val() ) {
+            M.toast({html: 'As senhas deve ser as mesmas.', classes: 'rounded'});
+        }
+    });
+
+    $( "#newUser" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = $( this ),
+            login = $form.find( "input[name='login']" ).val(),
+            pass = $form.find( "input[name='pass']" ).val(),
+            cpf = $form.find( "input[name='cpf']" ).val(),
+            name = $form.find( "input[name='name']" ).val();
+
+        var area = $("#area").find("option:selected").val();
+
+        if ( (login == '') || (pass == '') ) {
+            M.toast({html: 'Login e senha devem ser preenchidos!', classes: 'rounded'});
+            return false;
+        }
+
+        var formData = JSON.stringify({ login: login, pass: pass, cpf: cpf, name: name, area: area });
+        var posting = $.post( "<?= URL . '/novo-user' ?>", formData);
+        posting.done(function( data ) {
+            if (data == "Registro salvo com sucesso") {
+                $("#salvar").addClass(" disabled");
+                M.toast({html: data, classes: 'rounded'});
+            } else {
+                M.toast({html: data, classes: 'rounded'});
+            }
+
+        });
     });
 </script>

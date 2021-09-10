@@ -49,7 +49,9 @@
         var formData = JSON.stringify({ login: login, pass: pass });
         var posting = $.post( url, formData);
         posting.done(function( data ) {
-            if (data == 1) {
+            if (data == 2) {
+                window.location.href = '<?= URL . '/admin' ?>';
+            } else if (data == 1) {
                 window.location.href = '<?= URL . '/user/listar' ?>';
             } else {
                 M.toast({html: 'Usuário e/ou senha inválidos.', classes: 'rounded'});

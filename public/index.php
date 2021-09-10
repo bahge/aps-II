@@ -7,6 +7,8 @@ error_reporting(E_ALL);
 
 require_once "vendor/autoload.php";
 
+session_start();
+
 use aps\appcore\Config;
     try {
         Config::getInstance()->loadFileEnv();

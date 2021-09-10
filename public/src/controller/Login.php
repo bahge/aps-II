@@ -8,9 +8,8 @@ use aps\controller\main\Header;
 
 class Login
 {
-    private array $fakeLogin = ['login' => 'user',
-        'pass' => 'senha',
-        'name' => 'Teste'];
+    private string $name;
+    private int $level;
 
     public function loginPage(): void
     {
@@ -21,23 +20,60 @@ class Login
         include_once ( "src/view/main/footer.phtml" );
     }
 
-    public function getLoginData(): bool
+    public function getLoginData(): int
     {
         $json = file_get_contents ('php://input');
         $data = json_decode ($json, true);
 
         if ( $this->ckeckLogin ($data) ) {
-            $_SESSION['username'] = $this->fakeLogin['name'];
-            return true;
+            $_SESSION['username'] = $this->name;
+            $_SESSION['level'] = strval($this->level);
+            if ($this->level > 0) {
+                return 2;
+            }
+            return 1;
         } else {
             unset($_SESSION['username']);
-            return false;
+            return 0;
+        }
+    }
+
+    public function getLoginHeaderData(string $login, string $pass): int
+    {
+        $data['login'] = $login;
+        $data['pass'] = $pass;
+
+        if ( $this->ckeckLogin ($data) ) {
+            $_SESSION['username'] = $this->name;
+            $_SESSION['level'] = strval($this->level);
+            if ($this->level > 0) {
+                return 2;
+            }
+            return 1;
+        } else {
+            unset($_SESSION['username']);
+            return 0;
         }
     }
 
     private function ckeckLogin(array $data): bool
     {
-        if ( ( $data['login'] == $this->fakeLogin['login'] ) && password_verify ($data['pass'], password_hash ($this->fakeLogin['pass'], PASSWORD_BCRYPT)) ) return true;
+        $userBD = new User();
+        $user = $userBD->getLoginData ($data['login'] );
+
+        if ( ( $data['login'] == $user['login'] ) && password_verify ($data['pass'], $user['pass']) ) {
+            $this->name = $user['name'];
+            $this->level = $user['level'];
+            return true;
+        }
         return false;
+    }
+
+    public function logout() : void
+    {
+        unset($_SESSION['username']);
+        unset($_SESSION['level']);
+        session_destroy();
+        header("Location: " . URL );
     }
 }

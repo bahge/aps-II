@@ -1,0 +1,54 @@
+<main class="container-fluid">
+    <div class="row">
+        <nav>
+            <div class="col s12">
+                <a href="<?= URL ?>/admin" class="breadcrumb">Painel</a>
+                <a class="breadcrumb">Usuários</a>
+                <a class="breadcrumb">Gerenciar</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="s12">
+                <table id="records_table">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Ação</th>
+                    </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            type: 'GET',
+            url: '<?= URL ?>/users' ,
+            dataType: 'json',
+            success: function (response) {
+                var trHTML = '<tbody>';
+                $.each(response, function (i, item) {
+                    trHTML += '<tr><td>';
+                        trHTML += item.name;
+                    trHTML += '</td><td>';
+                        trHTML += item.login;
+                    trHTML += '</td><td>';
+                        trHTML += '<a href="<?= URL ?>/user/editar/' + item.id + '" class="waves-effect waves-light btn">';
+                        trHTML += '<i class="material-icons left">edit</i>Editar</a> ';
+                        trHTML += '<a href="<?= URL ?>/user/apagar/' + item.id + '" class="waves-effect waves-light btn">';
+                        trHTML += '<i class="material-icons left">delete</i>Apagar</a>';
+                    trHTML += '</td></tr>';
+                });
+                trHTML += '</tbody>';
+                $('#records_table').append(trHTML);
+            }
+        });
+    });
+</script>

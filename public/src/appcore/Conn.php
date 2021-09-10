@@ -16,7 +16,7 @@ class Conn
         throw new \Exception("Não é possível desserializar um singleton.");
     }
 
-    public static function getInstance():self
+    public static function getInstance()
     {
         if (self::$instance === null)
         {

@@ -20,10 +20,11 @@ services:
         ipv4_address: 172.1.15.2
   
   mysql-app:
+    container_name: mysql
     image: mysql:8.0.19
     restart: always
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
     logging: 
       options: 
         max-size: "${LOG_SIZE}"
@@ -36,23 +37,6 @@ services:
     networks:
       network_app:
         ipv4_address: 172.1.15.3
-  
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.0.1
-    restart: always
-    environment:
-      PMA_HOST: "${HOST}"
-      PMA_USER: "${USER}"
-      PMA_PASSWORD: "${PWD}"
-    ports:
-      - "5000:80"
-    logging: 
-      options: 
-        max-size: "${LOG_SIZE}"
-        max-file: "${LOG_MAX_FILE}"
-    networks:
-      network_app:
-        ipv4_address: 172.1.15.5
 
 volumes:
   mysql-data:

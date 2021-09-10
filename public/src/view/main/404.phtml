@@ -1,3 +1,12 @@
+<?php
+header('WWW-Authenticate: Basic Realm="Login please"');
+header('HTTP/1.0 401 Unauthorized');
+if (isset($_SERVER['PHP_AUTH_USER'])) {
+    $r = ['erro' => 'Acesso apenas para usuários'];
+    echo json_encode ($r);
+    die;
+}
+?>
 <!doctype html>
 <html lang="pt-br">
 <head>

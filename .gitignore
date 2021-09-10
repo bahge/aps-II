@@ -1,4 +1,6 @@
 /public/vendor/
+/public/jsonTest/
 /public/composer.lock
 /public/vendor/
 /public/.htaccess
+/mysql/
