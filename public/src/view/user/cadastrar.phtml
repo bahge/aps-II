@@ -36,9 +36,6 @@
                 <div class="input-field col s12">
                     <select id="area" name="area">
                         <option value="" disabled selected>Escolha uma área de interesse</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
                     </select>
                     <label>Área de Interesse *</label>
                 </div>
@@ -55,8 +52,19 @@
 </div>
 
 <script>
+
     $(document).ready(function(){
-        $('select').formSelect();
+        $.getJSON( '<?= URL ?>/subjects', function( data ) {
+            $.each( data, (key , value) => {
+                console.log(value.assunto);
+                var option = new Option(value.assunto  , value.id)
+                $('#area').append(option)
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('select').formSelect();
+        });
     });
 
     $ ("#pass_02").focusout(function () {
@@ -83,11 +91,11 @@
         var formData = JSON.stringify({ login: login, pass: pass, cpf: cpf, name: name, area: area });
         var posting = $.post( "<?= URL . '/novo-user' ?>", formData);
         posting.done(function( data ) {
-            if (data == "Registro salvo com sucesso") {
+            if (data.aviso == "Registro salvo com sucesso") {
                 $("#salvar").addClass(" disabled");
-                M.toast({html: data, classes: 'rounded'});
+                M.toast({html: data.aviso, classes: 'rounded'});
             } else {
-                M.toast({html: data, classes: 'rounded'});
+                M.toast({html: data.aviso, classes: 'rounded'});
             }
 
         });

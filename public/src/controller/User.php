@@ -4,11 +4,25 @@ namespace aps\controller;
 
 if ( !isset($_SESSION) ) { session_start (); }
 
+use aps\appcore\JsonMsg;
 use aps\controller\main\Header;
+use aps\model\SubjectModel;
 use aps\model\UserModel;
 
 class User
 {
+    private UserModel $user;
+    use JsonMsg;
+
+    public function __construct ()
+    {
+        $this->user = new UserModel();
+    }
+
+    public function newUser(): void
+    {
+        $this->user->newUser ();
+    }
 
     public function cadastrar():void
     {
@@ -17,6 +31,12 @@ class User
         include_once("src/view/main/menu.phtml");
         include_once("src/view/user/cadastrar.phtml");
         include_once("src/view/main/footer.phtml");
+    }
+
+    public function list()
+    {
+        $users = new UserModel();
+        $users->listAll ();
     }
 
     public function listar():void
@@ -28,38 +48,27 @@ class User
         include_once("src/view/main/footer.phtml");
     }
 
-    public function list()
+    public function updateUser(): void
     {
-        $users = new UserModel();
-        $users->listAll ();
+        $this->user->updateUser ();
+
     }
 
-    public function newUser(): void
+    public function prepareEdit (int $id)
     {
-        $json = file_get_contents ('php://input');
-        $data = json_decode ($json, true);
+        $data = $this->user->editById ($id, null);
+        $subjects = new SubjectModel();
+        $r = $subjects->listAll (1);
+        $header = new Header("Editar Usuário");
+        include_once("src/view/main/header.phtml");
+        include_once("src/view/main/menu.phtml");
+        include_once("src/view/admin/user/editar.phtml");
+        include_once("src/view/main/footer.phtml");
+    }
 
-        $user = new UserModel();
-        $dataSave = [
-            'id' => ( $data['id'] ?? null ),
-            'login' => ( $data['login'] ?? null ),
-            'pass' => ( $data['pass'] ?? null ),
-            'cpf' => ( $data['cpf'] ?? null ),
-            'name' => ( $data['name'] ?? null ),
-            'area' => ( $data['area'] ?? null ),
-            'level' => ( $data['level'] ?? 0 )
-        ];
-
-        if (!is_null($dataSave['pass'])){
-            $dataSave['pass'] = password_hash ($dataSave['pass'], PASSWORD_BCRYPT);
-        }
-        $result = $user->insert ('user', $dataSave);
-        if ($result === true) {
-            echo "Registro salvo com sucesso";
-        } else {
-            echo $result;
-        }
-
+    public function deleteUser(): void
+    {
+        $this->user->deleteUser ();
     }
 
     public function getLoginData(string $login)

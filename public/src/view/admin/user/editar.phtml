@@ -1,0 +1,80 @@
+<nav>
+    <div class="nav-wrapper">
+        <div class="col s12">
+            <a href="#!" class="breadcrumb"> </a>
+            <a href="#!" class="breadcrumb">Editar Usuário</a>
+            <a href="#!" class="breadcrumb"><?= $data['name'] ?></a>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <p id="result" class="col-s12"></p>
+        <form class="col s12" id="editUser">
+            <input type="hidden" name="id" value="<?= $data['id'] ?>">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input placeholder="Digite um e-mail" id="login" type="text" name="login" value="<?= $data['login'] ?>">
+                    <label for="login">Login *</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf" value="<?= $data['cpf'] ?>">
+                    <label for="cpf">CPF *</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="area" name="area">
+                        <option value="" disabled>Escolha uma área de interesse</option>
+                        <?php foreach ( $r as $key => $value ) {?>
+                            <option value="<?= $value['id'] ?>" <?= ($data['area'] == $value['id'] ? 'selected' : '') ?>><?= $value['assunto'] ?></option>
+                        <?php }?>
+                    </select>
+                    <label>Área de Interesse *</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input placeholder="Como deseja ser chamado" id="name" type="text" name="name" value="<?= $data['name'] ?>">
+                    <label for="name">Nome *</label>
+                </div>
+            </div>
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Salvar</button></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('select').formSelect();
+    });
+
+    $( "#editUser" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = $( this ),
+            id = $form.find( "input[name='id']" ).val(),
+            login = $form.find( "input[name='login']" ).val(),
+            cpf = $form.find( "input[name='cpf']" ).val(),
+            name = $form.find( "input[name='name']" ).val();
+
+        var area = $("#area").find("option:selected").val();
+
+        var formData = JSON.stringify({ id: id, login: login, cpf: cpf, name: name, area: area });
+        var posting = $.post( "<?= URL . '/update-user' ?>", formData);
+        posting.done(function( data ) {
+            if (data.aviso == 'Registro salvo com sucesso') {
+                M.toast({html: data.aviso, classes: 'rounded'});
+                setTimeout(function() {
+                    window.location.href = "<?= URL ?>/user/gerenciar";
+                }, 2000);
+
+            } else {
+                M.toast({html: data, classes: 'rounded'});
+            }
+
+        });
+    });
+</script>

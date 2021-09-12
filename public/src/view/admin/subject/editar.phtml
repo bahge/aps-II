@@ -1,0 +1,48 @@
+<nav>
+    <div class="nav-wrapper">
+        <div class="col s12">
+            <a href="#!" class="breadcrumb"> </a>
+            <a href="#!" class="breadcrumb">Novo Assunto</a>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <form class="col s12" id="edit">
+            <input type="hidden" name="id" value="<?= $data['id'] ?>">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input placeholder="Digite um assunto" id="assunto" type="text" name="assunto" value="<?= $data['assunto'] ?>">
+                    <label for="assunto">Assunto *</label>
+                </div>
+            </div>
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    $( "#edit" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = $( this ),
+            id = $form.find( "input[name='id']" ).val(),
+            assunto = $form.find( "input[name='assunto']" ).val();
+
+        var formData = JSON.stringify({ id: id, assunto: assunto });
+        var posting = $.post( "<?= URL . '/update-subject' ?>", formData);
+        posting.done(function( data ) {
+            if (data.aviso == 'Registro salvo com sucesso') {
+                M.toast({html: data.aviso, classes: 'rounded'});
+                setTimeout(function() {
+                    window.location.href = "<?= URL ?>/assunto/gerenciar";
+                }, 2000);
+
+            } else {
+                M.toast({html: data, classes: 'rounded'});
+            }
+
+        });
+    });
+</script>

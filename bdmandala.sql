@@ -10,3 +10,11 @@ create table user
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
+create table subject
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    assunto varchar(100) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);
