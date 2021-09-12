@@ -94,6 +94,9 @@
             if (data.aviso == "Registro salvo com sucesso") {
                 $("#salvar").addClass(" disabled");
                 M.toast({html: data.aviso, classes: 'rounded'});
+                setTimeout(function() {
+                    window.location.href = "<?= URL ?>/login";
+                }, 1000);
             } else {
                 M.toast({html: data.aviso, classes: 'rounded'});
             }
