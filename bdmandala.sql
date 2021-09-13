@@ -42,3 +42,11 @@ create table discipline
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
+create table exam
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    simulado varchar(100) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);

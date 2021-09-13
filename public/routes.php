@@ -2,7 +2,7 @@
 
 if(!isset($_SESSION)) session_start();
 
-use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline};
+use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline, Exam};
 use Pecee\SimpleRouter\Exceptions\NotFoundHttpException;
 use Pecee\SimpleRouter\SimpleRouter;
 use aps\appcore\Auth;
@@ -19,6 +19,7 @@ SimpleRouter::get ('/subjects', [Subject::class, 'list']);
 SimpleRouter::get ('/juries', [Jury::class, 'list']);
 SimpleRouter::get ('/roles', [Role::class, 'list']);
 SimpleRouter::get ('/disciplines', [Discipline::class, 'list']);
+SimpleRouter::get ('/exams', [Exam::class, 'list']);
 
 /* Verifica se há autenticação por cabeçalho */
 Auth::isAuthHeader();
@@ -56,6 +57,10 @@ if(Auth::isAuth()) {
         SimpleRouter::post ('/nova-disciplina', [Discipline::class, 'newDiscipline']);
         SimpleRouter::post ('/update-discipline', [Discipline::class, 'update']);
         SimpleRouter::post ('/delete-discipline', [Discipline::class, 'delete']);
+
+        SimpleRouter::post ('/novo-simulado', [Exam::class, 'newExam']);
+        SimpleRouter::post ('/update-exam', [Exam::class, 'update']);
+        SimpleRouter::post ('/delete-exam', [Exam::class, 'delete']);
     }
 
     /* Usuários */
