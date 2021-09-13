@@ -2,7 +2,7 @@
 
 if(!isset($_SESSION)) session_start();
 
-use aps\controller\{Home, Login, Admin, Subject, User};
+use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline};
 use Pecee\SimpleRouter\Exceptions\NotFoundHttpException;
 use Pecee\SimpleRouter\SimpleRouter;
 use aps\appcore\Auth;
@@ -16,6 +16,9 @@ SimpleRouter::post('/login', [Login::class, 'getLoginData']);
 SimpleRouter::post ('/novo-user', [User::class, 'newUser']);
 
 SimpleRouter::get ('/subjects', [Subject::class, 'list']);
+SimpleRouter::get ('/juries', [Jury::class, 'list']);
+SimpleRouter::get ('/roles', [Role::class, 'list']);
+SimpleRouter::get ('/disciplines', [Discipline::class, 'list']);
 
 /* Verifica se há autenticação por cabeçalho */
 Auth::isAuthHeader();
@@ -25,7 +28,6 @@ if(Auth::isAuth()) {
 
     /* Verifica se é admin */
     if(Auth::isAdmin()) {
-
         SimpleRouter::get('/admin', [Admin::class, 'index']);
         SimpleRouter::get('/user/gerenciar', [Admin::class, 'userManager']);
         SimpleRouter::get ('/users', [User::class, 'list']);
@@ -33,15 +35,27 @@ if(Auth::isAuth()) {
         SimpleRouter::post ('/update-user', [User::class, 'updateUser']);
         SimpleRouter::post ('/delete-user', [User::class, 'deleteUser']);
 
-
         /* Front */
         SimpleRouter::get('/assunto/cadastrar', [Subject::class, 'cadastrar']);
         SimpleRouter::get ('/assunto/gerenciar', [Subject::class, 'listar']);
         SimpleRouter::get('/assunto/editar/{id}', [Subject::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
+
         /* API */
+        SimpleRouter::post ('/novo-assunto', [Subject::class, 'newSubject']);
         SimpleRouter::post ('/update-subject', [Subject::class, 'update']);
         SimpleRouter::post ('/delete-subject', [Subject::class, 'delete']);
-        SimpleRouter::post ('/novo-assunto', [Subject::class, 'newSubject']);
+
+        SimpleRouter::post ('/nova-banca', [Jury::class, 'newJury']);
+        SimpleRouter::post ('/update-jury', [Jury::class, 'update']);
+        SimpleRouter::post ('/delete-jury', [Jury::class, 'delete']);
+
+        SimpleRouter::post ('/novo-cargo', [Role::class, 'newRole']);
+        SimpleRouter::post ('/update-role', [Role::class, 'update']);
+        SimpleRouter::post ('/delete-role', [Role::class, 'delete']);
+
+        SimpleRouter::post ('/nova-disciplina', [Discipline::class, 'newDiscipline']);
+        SimpleRouter::post ('/update-discipline', [Discipline::class, 'update']);
+        SimpleRouter::post ('/delete-discipline', [Discipline::class, 'delete']);
     }
 
     /* Usuários */

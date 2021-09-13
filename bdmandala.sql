@@ -18,3 +18,27 @@ create table subject
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
+create table jury
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    banca varchar(50) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table role
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    cargo varchar(50) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table discipline
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    disciplina varchar(100) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);
