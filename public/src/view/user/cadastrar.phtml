@@ -12,7 +12,7 @@
         <form class="col s12" id="newUser">
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Digite um e-mail" id="login" type="text" name="login">
+                    <input placeholder="Digite um e-mail" id="login" type="text" name="login" data-length="100">
                     <label for="login">Login *</label>
                 </div>
             </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf">
+                    <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf" onkeyup="var cpf = this.value; if (cpf.match(/^\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}\.\d{3}$/) !== null) {this.value = cpf + '-';}" data-length="14">
                     <label for="cpf">CPF *</label>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Como deseja ser chamado" id="name" type="text" name="name">
+                    <input placeholder="Como deseja ser chamado" id="name" type="text" name="name" data-length="150">
                     <label for="name">Nome *</label>
                 </div>
             </div>
@@ -52,8 +52,8 @@
 </div>
 
 <script>
-
     $(document).ready(function(){
+        $('input#cpf, input#name').characterCounter();
         $.getJSON( '<?= URL ?>/subjects', function( data ) {
             $.each( data, (key , value) => {
                 console.log(value.assunto);

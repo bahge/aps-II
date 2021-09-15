@@ -50,3 +50,13 @@ create table exam
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
+create table passrecovery
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    verificacao varchar(200) NOT NULL,
+    id_user int NOT NULL,
+    login varchar(100) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);

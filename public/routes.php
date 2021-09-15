@@ -5,7 +5,7 @@ if(!isset($_SESSION)) session_start();
 use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline, Exam};
 use Pecee\SimpleRouter\Exceptions\NotFoundHttpException;
 use Pecee\SimpleRouter\SimpleRouter;
-use aps\appcore\Auth;
+use aps\appcore\{Auth, Email};
 
 /* Páginas públicas */
 SimpleRouter::get('/cadastrar', [User::class, 'cadastrar']);
@@ -20,6 +20,9 @@ SimpleRouter::get ('/juries', [Jury::class, 'list']);
 SimpleRouter::get ('/roles', [Role::class, 'list']);
 SimpleRouter::get ('/disciplines', [Discipline::class, 'list']);
 SimpleRouter::get ('/exams', [Exam::class, 'list']);
+
+SimpleRouter::get('/verify-recover/{verify}', [Email::class, 'verify']);
+SimpleRouter::post('/recuperarsenha', [Email::class, 'sendRecoveryPassword']);
 
 /* Verifica se há autenticação por cabeçalho */
 Auth::isAuthHeader();
