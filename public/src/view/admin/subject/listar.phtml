@@ -1,14 +1,12 @@
-<main class="container-fluid">
-    <div class="row">
-        <nav>
-            <div class="col s12">
-                <a href="<?= URL ?>/admin" class="breadcrumb">Painel</a>
-                <a class="breadcrumb">Assuntos</a>
-                <a class="breadcrumb">Gerenciar</a>
-            </div>
-        </nav>
+<nav>
+    <div class="col s12">
+        <a href="<?= URL ?>/admin" class="breadcrumb">Painel</a>
+        <a class="breadcrumb">Assuntos</a>
+        <a class="breadcrumb">Gerenciar</a>
     </div>
+</nav>
 
+<main class="container">
     <div class="container">
         <div class="row">
             <div class="s12">
@@ -48,7 +46,7 @@
                     trHTML += '</td><td>';
                     trHTML += '<a href="<?= URL ?>/assunto/editar/' + item.id + '" class="waves-effect waves-light btn">';
                     trHTML += '<i class="material-icons left">edit</i>Editar</a> ';
-                    trHTML += `<button onclick="openModalConfirmDelete('${item.assunto}', '${item.id}')" id="${item.id}" class="waves-effect waves-light btn">`;
+                    trHTML += `<button onclick="openModalConfirmDelete('${item.assunto}', '${item.id}')" id="${item.id}" class="waves-effect waves-light btn red darken-1">`;
                     trHTML += '<i class="material-icons left">delete</i>Apagar</button>';
                     trHTML += '</td></tr>';
                 });

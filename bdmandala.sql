@@ -46,6 +46,11 @@ create table discipline
 create table exam
 (
     id int PRIMARY KEY AUTO_INCREMENT,
+    ano int NOT NULL,
+    id_role int NOT NULL REFERENCES role (id) ON DELETE CASCADE,
+    id_jury int NOT NULL REFERENCES jury (id) ON DELETE CASCADE,
+    id_discipline int NOT NULL REFERENCES discipline (id) ON DELETE CASCADE,
+    id_subject int NOT NULL REFERENCES subject (id) ON DELETE CASCADE,
     simulado varchar(100) NOT NULL,
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP

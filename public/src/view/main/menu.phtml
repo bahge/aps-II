@@ -1,9 +1,26 @@
+<?php
+if ( isset($_SESSION['level']) && $_SESSION['level'] == 1 ) {
+    $url = "http://localhost:8095/jsonTest/menu_adm.json";
+} else {
+    $url = "http://localhost:8095/jsonTest/menu.json";
+}
+?>
 <nav>
     <div id="menu" class="nav-wrapper">
         <a class="brand-logo">
             <img src="<?= URL ?>/assets/img/logo.png" alt="Logo" height="64px">
         </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
         </ul>
     </div>
 </nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <br><br><br><br>
+</ul>
+<script>
+    loadMenu('menu', "<?= $url ?>");
+    loadMenuMobile("<?= $url ?>");
+    loadMenu('menuFooter', "http://localhost:8095/jsonTest/menu.json");
+</script>

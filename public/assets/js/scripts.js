@@ -13,3 +13,19 @@ function loadMenu(menuId, path) {
         console.log(err)
     });
 }
+
+function loadMenuMobile(path) {
+    $.getJSON( path, function( data ) {
+        var items = '';
+        $.each( data, function( key, val ) {
+            if (key == 'menu'){
+                $.each( val, function( item, val ) {
+                    items += '<li><a href="' + val.link + '">' + val.text + '</a></li>';
+                });
+            }
+        });
+        $("#mobile-demo").append(items);
+    }).fail(function(err){
+        console.log(err)
+    });
+}

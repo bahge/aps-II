@@ -21,14 +21,12 @@ SimpleRouter::get ('/roles', [Role::class, 'list']);
 SimpleRouter::get ('/disciplines', [Discipline::class, 'list']);
 SimpleRouter::get ('/exams', [Exam::class, 'list']);
 
-SimpleRouter::get('/verify-recover/{verify}', [Email::class, 'verify']);
+SimpleRouter::get('/esqueciasenha', [User::class, 'formRecoveryPassword']);
+SimpleRouter::get('/verify-recover/{verify}', [User::class, 'recoverPassword']);
 SimpleRouter::post('/recuperarsenha', [Email::class, 'sendRecoveryPassword']);
 
-/* Verifica se há autenticação por cabeçalho */
-Auth::isAuthHeader();
-
 /* Verifica se há está autenticado */
-if(Auth::isAuth()) {
+if(Auth::isAuth() OR Auth::isAuthHeader()) {
 
     /* Verifica se é admin */
     if(Auth::isAdmin()) {
@@ -36,13 +34,22 @@ if(Auth::isAuth()) {
         SimpleRouter::get('/user/gerenciar', [Admin::class, 'userManager']);
         SimpleRouter::get ('/users', [User::class, 'list']);
         SimpleRouter::get('/user/editar/{id}', [User::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
-        SimpleRouter::post ('/update-user', [User::class, 'updateUser']);
-        SimpleRouter::post ('/delete-user', [User::class, 'deleteUser']);
+        SimpleRouter::post ('/update-user', [User::class, 'update']);
+        SimpleRouter::post ('/delete-user', [User::class, 'delete']);
 
         /* Front */
         SimpleRouter::get('/assunto/cadastrar', [Subject::class, 'cadastrar']);
         SimpleRouter::get ('/assunto/gerenciar', [Subject::class, 'listar']);
         SimpleRouter::get('/assunto/editar/{id}', [Subject::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
+
+        SimpleRouter::get ('/banca/cadastrar', [Jury::class, 'cadastrar']);
+        SimpleRouter::get ('/banca/gerenciar', [Jury::class, 'listar']);
+        SimpleRouter::get('/banca/editar/{id}', [Jury::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
+
+        SimpleRouter::get ('/prova/cadastrar', [Exam::class, 'cadastrar']);
+        SimpleRouter::get ('/prova/gerenciar', [Exam::class, 'listar']);
+        SimpleRouter::get('/prova/editar/{id}', [Exam::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
+
 
         /* API */
         SimpleRouter::post ('/novo-assunto', [Subject::class, 'newSubject']);

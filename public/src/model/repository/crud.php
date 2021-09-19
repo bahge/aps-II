@@ -55,7 +55,7 @@ class crud
         {
             $this->result = conn::run($query, $param)->fetchAll();
         } catch (Exception $e) {
-            $this->result = array("Erro" => $e.getMessage());
+            $this->result = array("Erro" => $e->getMessage());
         }
         return $this->result;
     }
@@ -89,7 +89,7 @@ class crud
                 $this->result = true;
             }
         } catch (Exception $e) {
-            $this->result = array("Erro" => $e.getMessage());
+            $this->result = array("Erro" => $e->getMessage());
         }
         return $this->result;
     }
@@ -119,7 +119,7 @@ class crud
                 $this->result = false;
             }
         } catch (Exception $e) {
-            $this->result = array("Erro" => $e.getMessage());
+            $this->result = array("Erro" => $e->getMessage());
         }
         return $this->result;
     }

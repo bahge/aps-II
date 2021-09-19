@@ -1,10 +1,4 @@
-<?php
-    if ( isset($_SESSION['level']) && $_SESSION['level'] == 1 ) {
-        $url = "http://localhost:8095/jsonTest/menu_adm.json";
-    } else {
-        $url = "http://localhost:8095/jsonTest/menu.json";
-    }
-?>
+
 <footer class="page-footer">
     <div class="container-fluid">
         <div class="row">
@@ -47,9 +41,8 @@
 <?php endif; ?>
 
 <script>
-    $(document).ready(function(){
-        loadMenu('menu', "<?= $url ?>");
-        loadMenu('menuFooter', "http://localhost:8095/jsonTest/menu.json");
+    $(document).ready(function() {
+        $('#mobile-demo').sidenav();
     });
 </script>
 </body>

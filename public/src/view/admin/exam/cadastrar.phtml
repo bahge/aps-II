@@ -1,0 +1,149 @@
+<nav>
+    <div class="nav-wrapper">
+        <div class="col s12">
+            <a href="#!" class="breadcrumb"> </a>
+            <a href="#!" class="breadcrumb">Nova Prova</a>
+        </div>
+    </div>
+</nav>
+<main class="container">
+    <br>
+    <div class="row">
+        <form class="col s12" id="newExam">
+            <div class="row">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Digite uma ano" id="ano" type="text" name="ano" data-length="4">
+                        <label for="ano">Ano *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="cargo" name="cargo">
+                            <option value="" disabled selected>Escolha um cargo</option>
+                        </select>
+                        <label>Cargo *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="banca" name="banca">
+                            <option value="" disabled selected>Escolha uma banca</option>
+                        </select>
+                        <label>Banca *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="disciplina" name="disciplina">
+                            <option value="" disabled selected>Escolha uma disciplina</option>
+                        </select>
+                        <label>Disciplina *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="assunto" name="assunto">
+                            <option value="" disabled selected>Escolha um assunto</option>
+                        </select>
+                        <label>Assunto *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="Digite um nome ou descrição" id="simulado" type="text" name="simulado">
+                        <label for="simulado">Nome/Descrição *</label>
+                    </div>
+                </div>
+            </div>
+
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
+        </form>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function(){
+        $.getJSON( '<?= URL ?>/roles', function( data ) {
+            $.each( data, (key , value) => {
+                var option = new Option(value.cargo  , value.id)
+                $('#cargo').append(option)
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#cargo').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/juries', function( data ) {
+            $.each( data, (key , value) => {
+                var option = new Option(value.banca  , value.id)
+                $('#banca').append(option)
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#banca').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/disciplines', function( data ) {
+            $.each( data, (key , value) => {
+                var option = new Option(value.disciplina  , value.id)
+                $('#disciplina').append(option)
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#disciplina').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/subjects', function( data ) {
+            $.each( data, (key , value) => {
+                var option = new Option(value.assunto  , value.id)
+                $('#assunto').append(option)
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#assunto').formSelect();
+        });
+
+        $( "#newExam" ).submit(function( event ) {
+            event.preventDefault();
+            var ano = $("#ano").val();
+            var cargo = $("#cargo").find("option:selected").val();
+            var banca = $("#banca").find("option:selected").val();
+            var disciplina = $("#disciplina").find("option:selected").val();
+            var assunto = $("#assunto").find("option:selected").val();
+            var simulado = $("#simulado").val();
+
+            var formData = JSON.stringify({
+                ano: ano,
+                id_role : cargo,
+                id_jury: banca,
+                id_discipline: disciplina,
+                id_subject: assunto,
+                simulado: simulado
+            });
+
+            var posting = $.post( "<?= URL . '/novo-simulado' ?>", formData);
+            posting.done(function( data ) {
+                if (data.aviso == "Registro salvo com sucesso") {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                    setTimeout(function() {
+                        window.location.href = "<?= URL ?>/admin";
+                    }, 1000);
+                } else {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                }
+
+            });
+        });
+
+    });
+</script>

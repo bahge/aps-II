@@ -2,7 +2,7 @@
     <div class="nav-wrapper">
         <div class="col s12">
             <a href="#!" class="breadcrumb"> </a>
-            <a href="#!" class="breadcrumb">Editar Assunto</a>
+            <a href="#!" class="breadcrumb">Editar Banca</a>
         </div>
     </div>
 </nav>
@@ -13,11 +13,11 @@
             <input type="hidden" name="id" value="<?= $data['id'] ?>">
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Digite um assunto" id="assunto" type="text" name="assunto" value="<?= $data['assunto'] ?>">
-                    <label for="assunto">Assunto *</label>
+                    <input id="banca" type="text" name="banca" value="<?= $data['banca'] ?>">
+                    <label for="banca">Banca *</label>
                 </div>
             </div>
-            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Atualizar</button></p>
         </form>
     </div>
 </main>
@@ -28,16 +28,16 @@
         event.preventDefault();
         var $form = $( this ),
             id = $form.find( "input[name='id']" ).val(),
-            assunto = $form.find( "input[name='assunto']" ).val();
+            banca = $form.find( "input[name='banca']" ).val();
 
-        var formData = JSON.stringify({ id: id, assunto: assunto });
-        var posting = $.post( "<?= URL . '/update-subject' ?>", formData);
+        var formData = JSON.stringify({ id: id, banca: banca });
+        var posting = $.post( "<?= URL . '/update-jury' ?>", formData);
         posting.done(function( data ) {
             if (data.aviso == 'Registro salvo com sucesso') {
                 M.toast({html: data.aviso, classes: 'rounded'});
                 setTimeout(function() {
-                    window.location.href = "<?= URL ?>/assunto/gerenciar";
-                }, 2000);
+                    window.location.href = "<?= URL ?>/banca/gerenciar";
+                }, 1000);
 
             } else {
                 M.toast({html: data, classes: 'rounded'});

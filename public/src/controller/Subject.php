@@ -5,11 +5,12 @@ namespace aps\controller;
 
 if ( !isset($_SESSION) ) { session_start (); }
 
+use aps\appcore\interfaces\crudInterface;
 use aps\appcore\JsonMsg;
 use aps\controller\main\Header;
 use aps\model\SubjectModel;
 
-class Subject
+class Subject implements crudInterface
 {
     private SubjectModel $subject;
     use JsonMsg;
@@ -24,7 +25,7 @@ class Subject
         $this->subject->newSubject ();
     }
 
-    public function cadastrar():void
+    public function cadastrar() : void
     {
         $header = new Header("Novo assunto");
         include_once("src/view/main/header.phtml");
@@ -33,12 +34,12 @@ class Subject
         include_once("src/view/main/footer.phtml");
     }
 
-    public function list()
+    public function list() : void
     {
         $this->subject->listAll ();
     }
 
-    public function listar():void
+    public function listar() : void
     {
         $header = new Header("Assuntos");
         include_once("src/view/main/header.phtml");
@@ -47,13 +48,13 @@ class Subject
         include_once("src/view/main/footer.phtml");
     }
 
-    public function update(): void
+    public function update() : void
     {
         $this->subject->updateSubject ();
 
     }
 
-    public function prepareEdit (int $id)
+    public function prepareEdit (int $id) : void
     {
         $data = $this->subject->editById ($id, null);
         $header = new Header("Editar Assunto");
@@ -63,7 +64,7 @@ class Subject
         include_once("src/view/main/footer.phtml");
     }
 
-    public function delete(): void
+    public function delete() : void
     {
         $this->subject->deleteSubject ();
     }

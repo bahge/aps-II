@@ -42,7 +42,7 @@ class RoleModel extends crud
 
     }
 
-    public function listAll()
+    public function listAll(int $txt = null)
     {
         $this->dados = $this->crud->read ('role', null, null, null);
         $r = [];
@@ -53,7 +53,11 @@ class RoleModel extends crud
             ];
             array_push ($r, $jury);
         }
-        $this->message ($r);
+        if (is_null ($txt)){
+            $this->message ($r);
+        } else {
+            return $r;
+        }
     }
 
     public function listById(int $id)

@@ -1,21 +1,24 @@
 <nav>
     <div class="col s12">
         <a href="<?= URL ?>/admin" class="breadcrumb">Painel</a>
-        <a class="breadcrumb">Usuários</a>
+        <a class="breadcrumb">Simulados</a>
         <a class="breadcrumb">Gerenciar</a>
     </div>
 </nav>
 
-<main class="container-fluid">
+<main class="container">
     <div class="container">
         <div class="row">
             <div class="s12">
                 <table id="records_table">
                     <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Ação</th>
+                        <th>Ano</th>
+                        <th>Banca</th>
+                        <th>Cargo</th>
+                        <th>Disciplina</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
                     </tr>
                     </thead>
 
@@ -38,20 +41,26 @@
         $('.modal').modal();
         $.ajax({
             type: 'GET',
-            url: '<?= URL ?>/users' ,
+            url: '<?= URL ?>/exams' ,
             dataType: 'json',
             success: function (response) {
                 var trHTML = '<tbody>';
                 $.each(response, function (i, item) {
                     trHTML += '<tr><td>';
-                        trHTML += item.name;
+                    trHTML += item.ano;
                     trHTML += '</td><td>';
-                        trHTML += item.login;
+                    trHTML += item.banca.descricao;
                     trHTML += '</td><td>';
-                        trHTML += '<a href="<?= URL ?>/user/editar/' + item.id + '" class="waves-effect waves-light btn">';
-                        trHTML += '<i class="material-icons left">edit</i>Editar</a> ';
-                        trHTML += `<button onclick="openModalConfirmDelete('${item.name}', '${item.id}')" id="${item.id}" class="waves-effect waves-light btn red darken-1">`;
-                        trHTML += '<i class="material-icons left">delete</i>Apagar</button>';
+                    trHTML += item.cargo.descricao;
+                    trHTML += '</td><td>';
+                    trHTML += item.disciplina.descricao;
+                    trHTML += '</td><td>';
+                    trHTML += item.simulado;
+                    trHTML += '</td><td>';
+                    trHTML += '<a href="<?= URL ?>/prova/editar/' + item.id + '" class="waves-effect waves-light btn">';
+                    trHTML += '<i class="material-icons left">edit</i>Editar</a> ';
+                    trHTML += `<button onclick="openModalConfirmDelete('${item.simulado}', '${item.id}')" id="${item.id}" class="waves-effect waves-light btn red darken-1">`;
+                    trHTML += '<i class="material-icons left">delete</i>Apagar</button>';
                     trHTML += '</td></tr>';
                 });
                 trHTML += '</tbody>';
@@ -60,8 +69,8 @@
         });
     });
 
-    function openModalConfirmDelete(name, id) {
-        var message = `<p>Deseja apagar o usuário: <strong>${name}</strong></p>`;
+    function openModalConfirmDelete(simulado, id) {
+        var message = `<p>Deseja apagar a simulado: <strong>${simulado}</strong></p>`;
         message += '<br><br>';
         message += '<div class="right-align">';
         message += `<a onclick="$('#confirmDelete').modal('close');" class="waves-effect waves-light btn red lighten-3">Não</a> `;
@@ -73,14 +82,14 @@
 
     function deleteAccepted(idDel){
         var formData = JSON.stringify({ id: idDel });
-        var posting = $.post( "<?= URL . '/delete-user' ?>", formData);
+        var posting = $.post( "<?= URL . '/delete-exam' ?>", formData);
         posting.done(function( data ) {
             console.log(data);
-            if (data.aviso == 'Usuário apagado') {
+            if (data.aviso == 'Simulado apagado') {
                 $('#confirmDelete').modal('close');
                 M.toast({html: data.aviso, classes: 'rounded'});
                 setTimeout(function() {
-                    window.location.href = "<?= URL ?>/user/gerenciar";
+                    window.location.href = "<?= URL ?>/simulado/gerenciar";
                 }, 1000);
             } else {
                 $('#confirmDelete').modal('close');

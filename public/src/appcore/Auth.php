@@ -28,11 +28,13 @@ trait Auth
         return false;
     }
 
-    static public function isAuthHeader():void
+    static public function isAuthHeader():bool
     {
         if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
             $login = new Login();
             $r = $login->getLoginHeaderData ($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+            return true;
         }
+        return false;
     }
 }

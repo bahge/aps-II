@@ -1,5 +1,69 @@
-    Aqui começa a guerra!
+<?php if (!isset($user)):?>
 
-<pre>
-    <?= print_r ($a) ?>
-</pre>
+<main class="container">
+    <br><br><br><br>
+    <div class="row">
+        <div class="col s12 m4 offset-m4">
+            <div  id="cardlogin" class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <br><br><br>
+                        <form class="col s12" id="recoverPass" >
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input placeholder="Digite o login" id="login" type="text" name="login" data-length="100">
+                                    <label for="login">Login *</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf" onkeyup="var cpf = this.value; if (cpf.match(/^\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}\.\d{3}$/) !== null) {this.value = cpf + '-';}" data-length="14">
+                                    <label for="cpf">CPF *</label>
+                                </div>
+                            </div>
+                            <p class="right-align"><button id="enviar" type="submit" class="waves-effect waves-light btn">Enviar e-mail de recuperação</button></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function(){
+        $( "#recoverPass" ).submit(function( event ) {
+            event.preventDefault();
+            var $form = $( this ),
+                login = $form.find( "input[name='login']" ).val(),
+                cpf = $form.find( "input[name='cpf']" ).val();
+
+            var formData = JSON.stringify({ login: login, cpf: cpf });
+
+            $.ajax({
+                url: "<?= URL ?>/recuperarsenha",
+                method: "POST",
+                async: true,
+                data: formData,
+                success: function(data){
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                    setTimeout(function() {
+                        window.location.href = "<?= URL ?>";
+                    }, 1000);
+                },
+                erro: function(data){
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                }
+            }).fail(function(){
+                M.toast({html: "Erro, tente novamente.", classes: 'rounded'});
+            });
+
+        });
+    });
+</script>
+
+<?php else:?>
+
+<?= $user ?>
+
+<?php endif;?>

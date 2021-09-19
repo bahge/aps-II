@@ -1,0 +1,128 @@
+<nav>
+    <div class="nav-wrapper">
+        <div class="col s12">
+            <a href="#!" class="breadcrumb"> </a>
+            <a href="#!" class="breadcrumb">Editar Simulado</a>
+            <a href="#!" class="breadcrumb"><?= $data['simulado'] ?></a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <br>
+    <div class="row">
+        <p id="result" class="col-s12"></p>
+        <form class="col s12" id="editExam">
+            <div class="row">
+                <input type="hidden" name="id" value="<?= $data['id'] ?>">
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="ano" type="text" name="ano" data-length="4" value="<?= $data['ano'] ?>">
+                        <label for="ano">Ano *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="cargo" name="cargo">
+                            <option value="" disabled selected>Escolha um cargo</option>
+                            <?php foreach ( $roleList as $key => $value ) {?>
+                                <option value="<?= $value['id'] ?>" <?= ($data['id_role'] == $value['id'] ? 'selected' : '') ?>><?= $value['cargo'] ?></option>
+                            <?php }?>
+                        </select>
+                        <label>Cargo *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="banca" name="banca">
+                            <option value="" disabled selected>Escolha uma banca</option>
+                            <?php foreach ( $juryList as $key => $value ) {?>
+                                <option value="<?= $value['id'] ?>" <?= ($data['id_jury'] == $value['id'] ? 'selected' : '') ?>><?= $value['banca'] ?></option>
+                            <?php }?>
+                        </select>
+                        <label>Banca *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="disciplina" name="disciplina">
+                            <option value="" disabled selected>Escolha uma disciplina</option>
+                            <?php foreach ( $disciplineList as $key => $value ) {?>
+                                <option value="<?= $value['id'] ?>" <?= ($data['id_discipline'] == $value['id'] ? 'selected' : '') ?>><?= $value['disciplina'] ?></option>
+                            <?php }?>
+                        </select>
+                        <label>Disciplina *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="assunto" name="assunto">
+                            <option value="" disabled selected>Escolha um assunto</option>
+                            <?php foreach ( $subjectList as $key => $value ) {?>
+                                <option value="<?= $value['id'] ?>" <?= ($data['id_subject'] == $value['id'] ? 'selected' : '') ?>><?= $value['assunto'] ?></option>
+                            <?php }?>
+                        </select>
+                        <label>Assunto *</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="simulado" type="text" name="simulado" value="<?= $data['simulado'] ?>">
+                        <label for="simulado">Nome/Descrição *</label>
+                    </div>
+                </div>
+            </div>
+            <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Salvar</button></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#cargo').formSelect();
+        $('#banca').formSelect();
+        $('#disciplina').formSelect();
+        $('#assunto').formSelect();
+    });
+
+    $( "#editExam" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = $( this ),
+            id = $form.find("input[name='id']").val(),
+            ano = $form.find("input[name='ano']").val(),
+            simulado = $form.find("input[name='simulado']").val();
+        var cargo = $("#cargo").find("option:selected").val();
+        var banca = $("#banca").find("option:selected").val();
+        var disciplina = $("#disciplina").find("option:selected").val();
+        var assunto = $("#assunto").find("option:selected").val();
+
+        var formData = JSON.stringify({
+            id: id,
+            ano: ano,
+            id_role : cargo,
+            id_jury: banca,
+            id_discipline: disciplina,
+            id_subject: assunto,
+            simulado: simulado
+        });
+
+        var posting = $.post( "<?= URL . '/update-exam' ?>", formData);
+        posting.done(function( data ) {
+            if (data.aviso == 'Registro salvo com sucesso') {
+                M.toast({html: data.aviso, classes: 'rounded'});
+                setTimeout(function() {
+                    window.location.href = "<?= URL ?>/prova/gerenciar";
+                }, 2000);
+
+            } else {
+                M.toast({html: data, classes: 'rounded'});
+            }
+
+        });
+    });
+</script>

@@ -12,15 +12,11 @@ class Email
     use JsonMsg;
     public function sendRecoveryPassword()
     {
-        $stream = fopen('php://input', 'r');
-        if ($stream !== false) {
-            $data = json_decode(stream_get_contents($stream), true);
-        } else {
-            $data = json_decode("{}", true);
-        }
+        $json = file_get_contents ('php://input');
+        $data = json_decode ($json, true);
 
         $model = new EmailModel();
-        $user = $model->fakelogin ($data['email'], $data['cpf']);
+        $user = $model->fakelogin ($data['login'], $data['cpf']);
 
         if (array_key_exists ("aviso", $user)){
             $this->message ($user);
@@ -45,18 +41,6 @@ class Email
 
         $this->message (['aviso' => 'Sua verificação foi cadastrada com sucesso, verifique seu e-mail.']);
 
-
-    }
-
-    public function verify(string $verify)
-    {
-        $model = new EmailModel();
-        $a = $model->checkRecovery ($verify);
-        $header = new Header("Recuperar Senha");
-        include_once("src/view/main/header.phtml");
-        include_once("src/view/main/menu.phtml");
-        include_once("src/view/user/recuperar-senha.phtml");
-        include_once("src/view/main/footer.phtml");
 
     }
 }

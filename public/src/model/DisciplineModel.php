@@ -41,7 +41,7 @@ class DisciplineModel extends crud
 
     }
 
-    public function listAll()
+    public function listAll(int $txt = null)
     {
         $this->dados = $this->crud->read ('discipline', null, null, null);
         $r = [];
@@ -52,7 +52,11 @@ class DisciplineModel extends crud
             ];
             array_push ($r, $jury);
         }
-        $this->message ($r);
+        if (is_null ($txt)){
+            $this->message ($r);
+        } else {
+            return $r;
+        }
     }
 
     public function listById(int $id)
