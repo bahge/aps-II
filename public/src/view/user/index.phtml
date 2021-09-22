@@ -1,8 +1,100 @@
-<div class="container">
+<main class="container">
     <div class="row">
         <div class="col s12 m6">
             <p>Olá <strong><?=$_SESSION['username'];?></strong></p>
         </div>
+        <div id="questoes" class="col s12">
+
+        </div>
+        <div id="paginacao" class="col s12">
+
+        </div>
     </div>
 
-</div>
+</main>
+
+<script>
+
+    $(document).ready(function(){
+        getConteudo(1);
+    });
+
+    function getConteudo(page) {
+        $.ajax({
+            type: 'GET',
+            url: '<?= URL ?>/questoes/page/' + page ,
+            dataType: 'json',
+            success: function (response) {
+                $('#questoes').empty();
+                $('#paginacao').empty();
+
+                var pergunta = '';
+                $.each(response.questions, function( index, question ) {
+                    if (question.tipo == '1') {
+                        pergunta += '<ul class="collection with-header" id="'+ question.id +'">';
+                        pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
+                        $.each(question.respostas, function(index, value) {
+                            pergunta += '<li class="collection-item"><label><input type="radio" value="'+ value +'" name="'+ question.id +'"><span>'+ value +'</span></label></li>';
+                        });
+                        pergunta += '<li class="collection-item"><button class="btn" id="btn'+ question.id +'" onclick="resp('+ question.id +')">Responder</button></li>'
+                        pergunta += "</ul>";
+                    } else if (question.tipo == '2') {
+                        pergunta += '<ul class="collection with-header" id="'+ question.id +'">';
+                        pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
+                        pergunta += '<li class="collection-item"><label><input type="radio" value="Verdadeiro" name="'+ question.id +'"><span>Verdadeiro</span></label>';
+                        pergunta += '<label><input type="radio" value="Falso" name="'+ question.id +'"><span>Falso</span></label></li>';
+                        pergunta += '<li class="collection-item"><button class="btn" id="btn'+ question.id +'" onclick="resp('+ question.id +')">Responder</button></li>'
+                        pergunta += "</ul>";
+                    }
+                });
+                $('#questoes').append(pergunta);
+
+                var pagination = '<ul class="pagination">';
+                if (response.pagination.pg_atual == 1) {
+                    pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+                } else {
+                    var menos = response.pagination.pg_atual - 1;
+                    pagination += '<li class="waves-effect"><a onclick="getConteudo(' + menos + ')"><i class="material-icons">chevron_left</i></a></li>';
+                }
+                for ($i = 1; $i <= response.pagination.pages; $i++) {
+                    if ($i == response.pagination.pg_atual) {
+                        pagination += '<li class="active"><a href="#!">'+ $i + '</a></li>';
+                    } else {
+                        pagination += '<li class="waves-effect"><a onclick="getConteudo(' + $i + ')">'+ $i + '</a></li>';
+                    }
+                }
+                if (response.pagination.pg_atual == response.pagination.pages) {
+                    pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                } else {
+                    var mais = response.pagination.pg_atual + 1;
+                    pagination += '<li class="waves-effect"><a onclick="getConteudo(' + mais + ')"><i class="material-icons">chevron_right</i></a></li>';
+                }
+                pagination += '</ul>';
+                $('#paginacao').append(pagination);
+            }
+        });
+    }
+
+    function resp(id){
+        var value = $('input[name=' + id +']:checked', '#' + id ).val();
+
+        var formData = JSON.stringify({
+            id : id,
+            resposta : value
+        });
+        var posting = $.post( "<?= URL . '/responder' ?>", formData);
+        posting.done(function( data ) {
+            if ( data.aviso == 'Acertou' ) {
+                var a = $('input[name=' + id +']:checked', '#' + id ).parent().parent().html();
+                a += '<span class="new badge green" data-badge-caption="Acertou"></span>';
+                a += '<p>' + data.explicacao + '</p>';
+                $('input[name=' + id +']:checked', '#' + id ).parent().parent().html(a);
+                $("#btn" + id).addClass("disabled");
+            } else {
+                var a = $('input[name=' + id +']:checked', '#' + id ).parent().parent().html();
+                a += '<span class="new badge red" data-badge-caption="Errou"></span>';
+                $('input[name=' + id +']:checked', '#' + id ).parent().parent().html(a);
+            }
+        });
+    }
+</script>

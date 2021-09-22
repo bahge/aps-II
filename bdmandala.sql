@@ -65,3 +65,24 @@ create table passrecovery
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
+create table question
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    tipo int NOT NULL,
+    pergunta text NOT NULL,
+    resposta1 text NULL,
+    resposta2 text NULL,
+    resposta3 text NULL,
+    resposta4 text NULL,
+    resposta5 text NULL,
+    explicacao text NOT NULL,
+    correta text NOT NULL,
+    id_exam int NULL,
+    id_role int NULL,
+    id_jury int NULL,
+    id_discipline int NULL,
+    id_subject int NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);

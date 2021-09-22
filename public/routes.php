@@ -2,7 +2,7 @@
 
 if(!isset($_SESSION)) session_start();
 
-use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline, Exam};
+use aps\controller\{Home, Login, Admin, Subject, User, Jury, Role, Discipline, Exam, Question};
 use Pecee\SimpleRouter\Exceptions\NotFoundHttpException;
 use Pecee\SimpleRouter\SimpleRouter;
 use aps\appcore\{Auth, Email};
@@ -50,6 +50,7 @@ if(Auth::isAuth() OR Auth::isAuthHeader()) {
         SimpleRouter::get ('/prova/gerenciar', [Exam::class, 'listar']);
         SimpleRouter::get('/prova/editar/{id}', [Exam::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
 
+        SimpleRouter::get ('/pergunta/cadastrar', [Question::class, 'cadastrar']);
 
         /* API */
         SimpleRouter::post ('/novo-assunto', [Subject::class, 'newSubject']);
@@ -71,11 +72,17 @@ if(Auth::isAuth() OR Auth::isAuthHeader()) {
         SimpleRouter::post ('/novo-simulado', [Exam::class, 'newExam']);
         SimpleRouter::post ('/update-exam', [Exam::class, 'update']);
         SimpleRouter::post ('/delete-exam', [Exam::class, 'delete']);
+
+        SimpleRouter::post ('/nova-questao', [Question::class, 'newQuestion']);
     }
 
     /* Usuários */
     SimpleRouter::get('/user/listar', [User::class, 'listar']);
     SimpleRouter::get('/logout', [Login::class, 'logout']);
+    SimpleRouter::get('/questoes', [Question::class, 'listarPerguntas']);
+    SimpleRouter::get('/questoes/page/{pg}', [Question::class, 'listarPerguntas'], ['where' => ['pg' => '[0-9]+']]);
+    SimpleRouter::post ('/responder', [Question::class, 'responder']);
+
 
 }
 

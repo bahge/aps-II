@@ -1,0 +1,326 @@
+
+
+<main class="container">
+    <br><br>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#questionme">Múltipla Escolha</a></li>
+                <li class="tab col s3"><a href="#questionvf">Verdadeiro/Falso</a></li>
+            </ul>
+        </div>
+
+        <div id="questionme" class="col s12">
+            <br>
+            <form class="col s12" id="newQuestionMe">
+                <div class="row">
+                    <input type="hidden" id="tipo" name="tipo" value="1">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Digite uma pergunta" id="pergunta" type="text" name="pergunta">
+                            <label for="pergunta">Pergunta *</label>
+                        </div>
+                        <div class="col s12">
+                            <span class="teal-text text-darken-1">Resposta correta</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Digite a resposta certa" id="resposta1" type="text" name="resposta1">
+                            <label for="resposta1">Resposta correta *</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Digite a explicação da resposta certa" id="explicacao" type="text" name="explicacao">
+                            <label for="explicacao">Explicação da resposta certa *</label>
+                        </div>
+                        <div class="col s12">
+                            <span class="red-text text-darken-1">Resposta correta</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Digite uma resposta incorreta" id="resposta2" type="text" name="resposta2">
+                            <input placeholder="Digite uma resposta incorreta" id="resposta3" type="text" name="resposta3">
+                            <input placeholder="Digite uma resposta incorreta" id="resposta4" type="text" name="resposta4">
+                            <input placeholder="Digite uma resposta incorreta" id="resposta5" type="text" name="resposta5">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="simulado" name="simulado">
+                                <option value="" disabled selected>Escolha um simulado</option>
+                            </select>
+                            <label>Simulado *</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12 l6">
+                            <select id="cargo" name="cargo">
+                                <option value="0" disabled selected>Escolha um cargo</option>
+                            </select>
+                            <label>Cargo *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="banca" name="banca">
+                                <option value="0" disabled selected>Escolha uma banca</option>
+                            </select>
+                            <label>Banca *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="disciplina" name="disciplina">
+                                <option value="0" disabled selected>Escolha uma disciplina</option>
+                            </select>
+                            <label>Disciplina *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="assunto" name="assunto">
+                                <option value="0" disabled selected>Escolha um assunto</option>
+                            </select>
+                            <label>Assunto *</label>
+                        </div>
+                    </div>
+                </div>
+                <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
+            </form>
+
+        </div>
+
+        <div id="questionvf" class="col s12">
+            <form class="col s12" id="newQuestionVF">
+                <div class="row">
+                    <input type="hidden" id="tipo_vf" name="tipo" value="2">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Digite uma pergunta" id="pergunta" type="text" name="pergunta">
+                            <label for="pergunta_vf">Pergunta *</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <span class="teal-text text-darken-1">Resposta correta</span>
+                        </div>
+                        <div class="input-field col s6">
+                            <label>
+                                <input name="resposta1_vf" value="Verdadeiro" type="radio" />
+                                <span>Verdadeiro</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s6">
+                            <label>
+                                <input name="resposta1_vf" value="Falso" type="radio" />
+                                <span>Falso</span>
+                            </label>
+                        </div>
+
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="input-field col s12">
+
+                            <input placeholder="Digite a explicação da resposta certa" id="explicacao" type="text" name="explicacao">
+                            <label for="explicacao_vf">Explicação da resposta certa *</label>
+                        </div>
+                        <div class="col s12">
+                            <span class="red-text text-darken-1">Resposta correta</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="simulado_vf" name="simulado">
+                                <option value="0" disabled selected>Escolha um simulado</option>
+                            </select>
+                            <label>Simulado *</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12 l6">
+                            <select id="cargo_vf" name="cargo">
+                                <option value="0" disabled selected>Escolha um cargo</option>
+                            </select>
+                            <label>Cargo *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="banca_vf" name="banca">
+                                <option value="0" disabled selected>Escolha uma banca</option>
+                            </select>
+                            <label>Banca *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="disciplina_vf" name="disciplina">
+                                <option value="0" disabled selected>Escolha uma disciplina</option>
+                            </select>
+                            <label>Disciplina *</label>
+                        </div>
+                        <div class="input-field col s12 l6">
+                            <select id="assunto_vf" name="assunto">
+                                <option value="0" disabled selected>Escolha um assunto</option>
+                            </select>
+                            <label>Assunto *</label>
+                        </div>
+                    </div>
+                </div>
+                <p class="right-align"><button id="salvar" type="submit" class="waves-effect waves-light btn">Cadastrar</button></p>
+            </form>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    $(document).ready(function(){
+        $('.tabs').tabs();
+
+        $.getJSON( '<?= URL ?>/exams', function( data ) {
+            $.each( data, (key , value) => {
+                $('#simulado').append(new Option(value.simulado  , value.id));
+                $('#simulado_vf').append(new Option(value.simulado  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#simulado').formSelect();
+            $('#simulado_vf').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/roles', function( data ) {
+            $.each( data, (key , value) => {
+                $('#cargo').append(new Option(value.cargo  , value.id));
+                $('#cargo_vf').append(new Option(value.cargo  , value.id))
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#cargo').formSelect();
+            $('#cargo_vf').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/juries', function( data ) {
+            $.each( data, (key , value) => {
+                $('#banca').append(new Option(value.banca  , value.id));
+                $('#banca_vf').append(new Option(value.banca  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#banca').formSelect();
+            $('#banca_vf').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/disciplines', function( data ) {
+            $.each( data, (key , value) => {
+                $('#disciplina').append(new Option(value.disciplina  , value.id));
+                $('#disciplina_vf').append(new Option(value.disciplina  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#disciplina').formSelect();
+            $('#disciplina_vf').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/subjects', function( data ) {
+            $.each( data, (key , value) => {
+                $('#assunto').append(new Option(value.assunto  , value.id));
+                $('#assunto_vf').append(new Option(value.assunto  , value.id))
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#assunto').formSelect();
+            $('#assunto_vf').formSelect();
+        });
+
+        $( "#newQuestionMe" ).submit(function( event ) {
+            event.preventDefault();
+            var $form = $( this ),
+                tipo = $form.find( "input[name='tipo']" ).val(),
+                pergunta = $form.find( "input[name='pergunta']" ).val(),
+                resposta1 = $form.find( "input[name='resposta1']" ).val(),
+                resposta2 = $form.find( "input[name='resposta2']" ).val(),
+                resposta3 = $form.find( "input[name='resposta3']" ).val(),
+                resposta4 = $form.find( "input[name='resposta4']" ).val(),
+                resposta5 = $form.find( "input[name='resposta5']" ).val(),
+                explicacao = $form.find( "input[name='explicacao']" ).val();
+            var cargo = $("#cargo_vf").find("option:selected").val();
+            var banca = $("#banca_vf").find("option:selected").val();
+            var disciplina = $("#disciplina_vf").find("option:selected").val();
+            var assunto = $("#assunto_vf").find("option:selected").val();
+            var simulado = $("#simulado_vf").find("option:selected").val();
+
+            var formData = JSON.stringify({
+                tipo : tipo,
+                pergunta : pergunta,
+                correta : resposta1,
+                resposta1 : resposta1,
+                resposta2 : resposta2,
+                resposta3 : resposta3,
+                resposta4 : resposta4,
+                resposta5 : resposta5,
+                explicacao : explicacao,
+                id_role : cargo,
+                id_jury: banca,
+                id_discipline: disciplina,
+                id_subject: assunto,
+                id_exam: simulado
+            });
+
+            var posting = $.post( "<?= URL . '/nova-questao' ?>", formData);
+            posting.done(function( data ) {
+                if (data.aviso == "Registro salvo com sucesso") {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                    setTimeout(function() {
+                        window.location.href = "<?= URL ?>/pergunta/cadastrar";
+                    }, 1000);
+                } else {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                }
+
+            });
+        });
+
+        $( "#newQuestionVF" ).submit(function( event ) {
+            event.preventDefault();
+            var $form = $( this ),
+                tipo = $form.find( "input[name='tipo']" ).val(),
+                pergunta = $form.find( "input[name='pergunta']" ).val(),
+                resposta1 = $form.find( "input[name='resposta1_vf']:checked" ).val(),
+                explicacao = $form.find( "input[name='explicacao']" ).val();
+            var cargo = $("#cargo_vf").find("option:selected").val();
+            var banca = $("#banca_vf").find("option:selected").val();
+            var disciplina = $("#disciplina_vf").find("option:selected").val();
+            var assunto = $("#assunto_vf").find("option:selected").val();
+            var simulado = $("#simulado_vf").find("option:selected").val();
+
+            var formData = JSON.stringify({
+                tipo : tipo,
+                pergunta : pergunta,
+                correta : resposta1,
+                resposta1 : resposta1,
+                explicacao : explicacao,
+                id_role : cargo,
+                id_jury: banca,
+                id_discipline: disciplina,
+                id_subject: assunto,
+                id_exam: simulado
+            });
+
+            var posting = $.post( "<?= URL . '/nova-questao' ?>", formData);
+            posting.done(function( data ) {
+                if (data.aviso == "Registro salvo com sucesso") {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                    setTimeout(function() {
+                        window.location.href = "<?= URL ?>/admin";
+                    }, 1000);
+                } else {
+                    M.toast({html: data.aviso, classes: 'rounded'});
+                }
+
+            });
+        });
+    });
+</script>
