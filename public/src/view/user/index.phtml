@@ -3,6 +3,18 @@
         <div class="col s12 m6">
             <p>Olá <strong><?=$_SESSION['username'];?></strong></p>
         </div>
+
+        <div class="input-field col s10">
+            <select id="assunto" name="assunto">
+                <option value="null" disabled selected>Escolha um assunto</option>
+            </select>
+            <label>Assunto</label>
+        </div>
+
+        <div class="input-field col s2">
+            <button class="btn" onclick='getConteudo(1)'>Filtrar</button>
+        </div>
+
         <div id="questoes" class="col s12">
 
         </div>
@@ -16,13 +28,30 @@
 <script>
 
     $(document).ready(function(){
-        getConteudo(1);
+        $.getJSON( '<?= URL ?>/subjects', function( data ) {
+            $.each( data, (key , value) => {
+                $('#assunto').append(new Option(value.assunto  , value.id));
+                $('#assunto_vf').append(new Option(value.assunto  , value.id))
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#assunto').formSelect();
+            $('#assunto_vf').formSelect();
+        });
+        getConteudo(1, null);
     });
 
     function getConteudo(page) {
+        var filter = $("#assunto").find("option:selected").val();
+        var url = '<?= URL ?>/questions/page/' + page;
+        if ( filter > 0 ){
+            url = '<?= URL ?>/questions/page/' + page + '?id_subject=' + filter;
+            filteractive = '?id_subject=' + filter;
+        }
         $.ajax({
             type: 'GET',
-            url: '<?= URL ?>/questoes/page/' + page ,
+            url: url,
             dataType: 'json',
             success: function (response) {
                 $('#questoes').empty();

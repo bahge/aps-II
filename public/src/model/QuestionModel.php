@@ -50,8 +50,17 @@ class QuestionModel extends crud
 
     public function listarPerguntas (int $pg = null) : void
     {
+        $args = null;
+        if (isset($_GET['id_subject'])) {
+            $args = 'WHERE id_subject = ';
+            $args .= filter_input (
+                        INPUT_GET,
+                        'id_subject',
+                        FILTER_SANITIZE_NUMBER_INT
+            );
+        }
         $num = $this->numquestoes;
-        $count = $this->numMaxQuestoes ();
+        $count = $this->numMaxQuestoes ($args);
         $numPag = ( $count % $num ) > 0 ? (int) ($count / $num) + 1 : ($count / $num) ;
         if(!is_null($pg)){
             $page = $pg - 1;
@@ -61,7 +70,8 @@ class QuestionModel extends crud
                 exit;
             }
             $paginacao = ['pg_atual' => $pg, 'pages' => $numPag];
-            $args = " LIMIT {$num} OFFSET {$offset}";
+            $args = (is_null($args) ? '' : $args);
+            $args .= " LIMIT {$num} OFFSET {$offset}";
         } else {
             $args = null;
             $paginacao = null;
@@ -114,9 +124,9 @@ class QuestionModel extends crud
         $this->message ($questions_return);
     }
 
-    private function numMaxQuestoes () : int
+    private function numMaxQuestoes ($args) : int
     {
-        $result = $this->crud->read ('question', null, null, array('count(id)'));
+        $result = $this->crud->read ('question', $args, null, array('count(id)'));
         return (int) $result[0]['count(id)'];
     }
 

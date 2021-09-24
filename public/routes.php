@@ -51,6 +51,7 @@ if(Auth::isAuth() OR Auth::isAuthHeader()) {
         SimpleRouter::get('/prova/editar/{id}', [Exam::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
 
         SimpleRouter::get ('/pergunta/cadastrar', [Question::class, 'cadastrar']);
+        SimpleRouter::get ('/pergunta/gerenciar', [Question::class, 'listar']);
 
         /* API */
         SimpleRouter::post ('/novo-assunto', [Subject::class, 'newSubject']);
@@ -79,8 +80,8 @@ if(Auth::isAuth() OR Auth::isAuthHeader()) {
     /* Usuários */
     SimpleRouter::get('/user/listar', [User::class, 'listar']);
     SimpleRouter::get('/logout', [Login::class, 'logout']);
-    SimpleRouter::get('/questoes', [Question::class, 'listarPerguntas']);
-    SimpleRouter::get('/questoes/page/{pg}', [Question::class, 'listarPerguntas'], ['where' => ['pg' => '[0-9]+']]);
+    SimpleRouter::get('/questions', [Question::class, 'listarPerguntas']);
+    SimpleRouter::get('/questions/page/{pg}', [Question::class, 'listarPerguntas'], ['where' => ['pg' => '[0-9]+']]);
     SimpleRouter::post ('/responder', [Question::class, 'responder']);
 
 

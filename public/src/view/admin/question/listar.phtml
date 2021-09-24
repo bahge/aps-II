@@ -1,0 +1,101 @@
+<nav>
+    <div class="col s12">
+        <a href="<?= URL ?>/admin" class="breadcrumb">Painel</a>
+        <a class="breadcrumb">Questões</a>
+        <a class="breadcrumb">Gerenciar</a>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="container">
+        <div class="row">
+            <div class="s12">
+                <table id="records_table">
+                    <thead>
+                    <tr>
+                        <th width="10%">Tipo</th>
+                        <th width="60%">Pergunta</th>
+                        <th width="30%">Ações</th>
+                    </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="confirmDelete" class="modal">
+    <div class="modal-content">
+        <h2>Apagar</h2>
+        <div id="messageDelete">Mensagem</div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        $('.modal').modal();
+        $.ajax({
+            type: 'GET',
+            url: '<?= URL ?>/questions' ,
+            dataType: 'json',
+            success: function (response) {
+                var trHTML = '<tbody>';
+                $.each(response, function (i, questions) {
+                    $.each(questions, function (k, question) {
+                        trHTML += '<tr><td>';
+                        if ( question.tipo == 1 ) {
+                            var tipo = "ME";
+                        } else {
+                            var tipo = "VF";
+                        }
+                        trHTML += tipo;
+                        trHTML += '</td><td>';
+                        trHTML += question.pergunta;
+                        trHTML += '</td><td>';
+                        trHTML += '<a href="<?= URL ?>/pergunta/editar/' + question.id + '" class="waves-effect waves-light btn">';
+                        trHTML += '<i class="material-icons left">edit</i>Editar</a> ';
+                        trHTML += `<button onclick="openModalConfirmDelete('${question.pergunta}', '${question.id}')" id="${question.id}" class="waves-effect waves-light btn red darken-1">`;
+                        trHTML += '<i class="material-icons left">delete</i>Apagar</button>';
+                        trHTML += '</td></tr>';
+                    });
+                });
+                trHTML += '</tbody>';
+                $('#records_table').append(trHTML);
+            }
+        });
+    });
+
+    function openModalConfirmDelete(pergunta, id) {
+        var message = `<p>Deseja apagar a pergunta: <strong>${pergunta}</strong></p>`;
+        message += '<br><br>';
+        message += '<div class="right-align">';
+        message += `<a onclick="$('#confirmDelete').modal('close');" class="waves-effect waves-light btn red lighten-3">Não</a> `;
+        message += `<a onclick="deleteAccepted(${id})" class="waves-effect waves-light btn">Sim</a>`;
+        message += '</div>';
+        document.querySelector("#messageDelete").innerHTML = message;
+        $('#confirmDelete').modal('open');
+    }
+
+    function deleteAccepted(idDel){
+        var formData = JSON.stringify({ id: idDel });
+        var posting = $.post( "<?= URL . '/delete-question' ?>", formData);
+        posting.done(function( data ) {
+            console.log(data);
+            if (data.aviso == 'Pergunta apagada') {
+                $('#confirmDelete').modal('close');
+                M.toast({html: data.aviso, classes: 'rounded'});
+                setTimeout(function() {
+                    window.location.href = "<?= URL ?>/pergunta/gerenciar";
+                }, 1000);
+            } else {
+                $('#confirmDelete').modal('close');
+                M.toast({html: 'Erro' + data.aviso, classes: 'rounded'});
+            }
+
+        });
+    }
+
+
+</script>

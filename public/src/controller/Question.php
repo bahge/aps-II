@@ -36,7 +36,11 @@ class Question implements crudInterface
 
     public function listar (): void
     {
-        // TODO: Implement listar() method.
+        $header = new Header("Perguntas");
+        include_once("src/view/main/header.phtml");
+        include_once("src/view/main/menu.phtml");
+        include_once("src/view/admin/question/listar.phtml");
+        include_once("src/view/main/footer.phtml");
     }
 
     public function update (): void
