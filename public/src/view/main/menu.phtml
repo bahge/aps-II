@@ -1,10 +1,10 @@
 <?php
 if ( isset($_SESSION['level']) && $_SESSION['level'] == 1 ) {
-    $url = "http://localhost:8095/jsonTest/menu_adm.json";
+    $url = "http://localhost:8095/jsonMenu/menu_adm.json";
 } else if ( isset($_SESSION['level']) && $_SESSION['level'] == 0 ) {
-    $url = "http://localhost:8095/jsonTest/menu_user.json";
+    $url = "http://localhost:8095/jsonMenu/menu_user.json";
 } else {
-    $url = "http://localhost:8095/jsonTest/menu.json";
+    $url = "http://localhost:8095/jsonMenu/menu.json";
 }
 ?>
 <nav>
@@ -24,5 +24,5 @@ if ( isset($_SESSION['level']) && $_SESSION['level'] == 1 ) {
 <script>
     loadMenu('menu', "<?= $url ?>");
     loadMenuMobile("<?= $url ?>");
-    loadMenu('menuFooter', "http://localhost:8095/jsonTest/menu.json");
+    loadMenu('menuFooter', "http://localhost:8095/jsonMenu/menu.json");
 </script>

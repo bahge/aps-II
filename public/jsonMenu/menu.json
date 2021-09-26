@@ -1,0 +1,16 @@
+{
+    "menu": [
+        {   
+            "link": "http://localhost:8095/login",
+            "text": "Login" 
+        },
+        {   
+            "link": "http://localhost:8095/quem-somos",
+            "text": "Quem Somos" 
+        },
+        {   
+            "link": "http://localhost:8095",
+            "text": "Página Inicial" 
+        }
+    ]
+}

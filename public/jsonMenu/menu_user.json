@@ -1,0 +1,20 @@
+{
+  "menu": [
+    {
+      "link": "http://localhost:8095/user/listar",
+      "text": "Perguntas"
+    },
+    {
+      "link": "http://localhost:8095/quem-somos",
+      "text": "Quem Somos"
+    },
+    {
+      "link": "http://localhost:8095",
+      "text": "Página Inicial"
+    },
+    {
+      "link": "http://localhost:8095/logout",
+      "text": "Deslogar"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "menu": [
+    {
+      "link": "http://localhost:8095/admin",
+      "text": "Painel Admin"
+    },
+    {
+      "link": "http://localhost:8095",
+      "text": "Página Inicial"
+    },
+    {
+      "link": "http://localhost:8095/logout",
+      "text": "Deslogar"
+    }
+  ]
+}
