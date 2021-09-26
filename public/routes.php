@@ -24,6 +24,7 @@ SimpleRouter::get ('/exams', [Exam::class, 'list']);
 SimpleRouter::get('/esqueciasenha', [User::class, 'formRecoveryPassword']);
 SimpleRouter::get('/verify-recover/{verify}', [User::class, 'recoverPassword']);
 SimpleRouter::post('/recuperarsenha', [Email::class, 'sendRecoveryPassword']);
+SimpleRouter::post('/update-new-pass', [User::class, 'saveNewPass']);
 
 /* Verifica se há está autenticado */
 if(Auth::isAuth() OR Auth::isAuthHeader()) {

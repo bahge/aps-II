@@ -100,4 +100,9 @@ class User implements crudInterface
         include_once("src/view/main/footer.phtml");
     }
 
+    public function saveNewPass ()
+    {
+        $this->user->saveNewPass();
+    }
+
 }

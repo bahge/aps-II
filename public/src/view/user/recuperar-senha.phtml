@@ -8,7 +8,7 @@
                 <div class="card-content">
                     <div class="row">
                         <br><br><br>
-                        <form class="col s12" id="recoverPass" >
+                        <form class="col s12" id="newPass" >
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input placeholder="Digite o login" id="login" type="text" name="login" data-length="100">
@@ -32,7 +32,7 @@
 
 <script>
     $(document).ready(function(){
-        $( "#recoverPass" ).submit(function( event ) {
+        $( "#newPass" ).submit(function( event ) {
             event.preventDefault();
             var $form = $( this ),
                 login = $form.find( "input[name='login']" ).val(),
@@ -62,36 +62,87 @@
     });
 </script>
 
-<?php else:?>
-
-    <main class="container">
-        <br><br><br><br>
-        <div class="row">
-            <div class="col s12 m4 offset-m4">
-                <div  id="cardlogin" class="card">
-                    <div class="card-content">
-                        <div class="row">
-                            <br><br><br>
-                            <form class="col s12" id="recoverPass" >
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input placeholder="Digite o login" id="login" type="text" name="login" data-length="100">
-                                        <label for="login">Senha 01 *</label>
-                                    </div>
+<?php
+else:
+    if (isset($user['aviso'])) {
+?>
+<main class="container">
+    <br><br><br><br>
+    <h3>Link expirado ou senha recuperada.</h3>
+</main>
+<?php } else { ?>
+<main class="container">
+    <br><br><br><br>
+    <div class="row">
+        <div class="col s12 m4 offset-m4">
+            <div  id="cardlogin" class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <br><br><br>
+                        <form class="col s12" id="newPass" >
+                            <div class="row">
+                                <input type="hidden" name="id_user" value="<?= $user['id_user'] ?>">
+                                <input type="hidden" name="id_rec" value="<?= $user['id'] ?>">
+                                <div class="input-field col s12">
+                                    <input placeholder="Digite a senha" id="pass01" type="password" name="pass01">
+                                    <label for="pass01">Senha 01 *</label>
                                 </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input placeholder="Digite seu CPF" id="cpf" type="text" name="cpf" onkeyup="var cpf = this.value; if (cpf.match(/^\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}$/) !== null) {this.value = cpf + '.';} else if (cpf.match(/^\d{3}\.\d{3}\.\d{3}$/) !== null) {this.value = cpf + '-';}" data-length="14">
-                                        <label for="cpf">Senha 02 *</label>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input placeholder="Digite a senha novamente" id="pass02" type="password" name="pass02">
+                                    <label for="pass02">Senha 02 *</label>
                                 </div>
-                                <p class="right-align"><button id="enviar" type="submit" class="waves-effect waves-light btn">Salvar</button></p>
-                            </form>
-                        </div>
+                            </div>
+                            <p class="right-align"><button id="enviar" type="submit" class="waves-effect waves-light btn">Salvar</button></p>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-<?php endif;?>
+<script>
+    $(document).ready(function(){
+        $( "#newPass" ).submit(function( event ) {
+            event.preventDefault();
+            var $form = $( this ),
+                id = $form.find( "input[name='id_user']" ).val(),
+                id_rec = $form.find( "input[name='id_rec']" ).val(),
+                pass01 = $form.find( "input[name='pass01']" ).val(),
+                pass02 = $form.find( "input[name='pass02']" ).val();
+
+            if (pass01 != pass02) {
+                M.toast({html: "As senhas são diferentes.", classes: 'rounded'});
+            } else {
+                var formData = JSON.stringify({ id: id, pass: pass01, id_rec: id_rec });
+
+                $.ajax({
+                    url: "<?= URL ?>/update-new-pass",
+                    method: "POST",
+                    async: true,
+                    data: formData,
+                    success: function(data){
+                        M.toast({html: data.aviso, classes: 'rounded'});
+                        setTimeout(function() {
+                            window.location.href = "<?= URL ?>";
+                        }, 1000);
+                    },
+                    erro: function(data){
+                        M.toast({html: data.aviso, classes: 'rounded'});
+                    }
+                }).fail(function(){
+                    M.toast({html: "Erro, tente novamente.", classes: 'rounded'});
+                });
+
+            }
+
+
+        });
+    });
+</script>
+<?php
+    };
+    endif;
+?>

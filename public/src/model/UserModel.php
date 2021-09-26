@@ -154,6 +154,44 @@ class UserModel extends crud
 
     }
 
+    public function saveNewPass(): void
+    {
+        $json = file_get_contents ('php://input');
+        $data = json_decode ($json, true);
+
+        if (empty($data)) {
+            $this->message (['erro' => 'A requisição deve conter os dados da nova senha']);
+            exit;
+        }
+
+        if (!isset($data['id']) || $data['id'] == ''){
+            $this->message (['erro' => 'O id do usuário deve ser informado']);
+            exit;
+        }
+
+        $dataUpdate = [
+            'id' => ( $data['id_rec'] ?? null )
+        ];
+
+        $r = $this->crud->delete ('passrecovery', ['id' => $dataUpdate['id']]);
+
+        $dataSave = [
+            'pass' => ( $data['pass'] ?? null )
+        ];
+
+        if (!is_null($dataSave['pass'])){
+            $dataSave['pass'] = password_hash ($dataSave['pass'], PASSWORD_BCRYPT);
+        }
+
+        $result = $this->crud->update ('user', $dataSave, ['id' => $data['id']]);
+        if ($result === true && $r === true) {
+            $this->message (['aviso' => 'Registro salvo com sucesso']);
+        } else {
+            $this->message (['aviso' => $result['erro']]);
+        }
+
+    }
+
     /**
      * @return int
      */
