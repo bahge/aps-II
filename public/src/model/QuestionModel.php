@@ -98,7 +98,7 @@ class QuestionModel extends crud
         }
 
         if (!empty($filters)) {
-            $args = 'WHERE ' . implode('& ', $filters );
+            $args = 'WHERE ' . implode(' AND ', $filters );
         }
 
         $num = $this->numquestoes;

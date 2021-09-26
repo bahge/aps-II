@@ -1,6 +1,8 @@
 <?php
 if ( isset($_SESSION['level']) && $_SESSION['level'] == 1 ) {
     $url = "http://localhost:8095/jsonTest/menu_adm.json";
+} else if ( isset($_SESSION['level']) && $_SESSION['level'] == 0 ) {
+    $url = "http://localhost:8095/jsonTest/menu_user.json";
 } else {
     $url = "http://localhost:8095/jsonTest/menu.json";
 }
