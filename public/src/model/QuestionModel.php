@@ -51,14 +51,56 @@ class QuestionModel extends crud
     public function listarPerguntas (int $pg = null) : void
     {
         $args = null;
+        $filters = [];
         if (isset($_GET['id_subject'])) {
-            $args = 'WHERE id_subject = ';
-            $args .= filter_input (
+            $var = 'id_subject = ' . filter_input (
                         INPUT_GET,
                         'id_subject',
                         FILTER_SANITIZE_NUMBER_INT
             );
+            array_push($filters, $var);
         }
+
+        if (isset($_GET['id_jury'])) {
+            $var = 'id_jury = ' . filter_input (
+                    INPUT_GET,
+                    'id_jury',
+                    FILTER_SANITIZE_NUMBER_INT
+                );
+            array_push($filters, $var);
+        }
+
+        if (isset($_GET['id_role'])) {
+            $var = 'id_role = ' . filter_input (
+                    INPUT_GET,
+                    'id_role',
+                    FILTER_SANITIZE_NUMBER_INT
+                );
+            array_push($filters, $var);
+        }
+
+        if (isset($_GET['id_discipline'])) {
+            $var = 'id_discipline = ' . filter_input (
+                    INPUT_GET,
+                    'id_discipline',
+                    FILTER_SANITIZE_NUMBER_INT
+                );
+            array_push($filters, $var);
+        }
+
+        if (isset($_GET['pergunta'])) {
+            $var = 'pergunta like "%' . filter_input (
+                    INPUT_GET,
+                    'pergunta',
+                    FILTER_SANITIZE_STRING
+                ) . '%"';
+            array_push($filters, $var);
+        }
+
+        if (!empty($filters)) {
+            $args = 'WHERE ' . implode('& ', $filters );
+        }
+
         $num = $this->numquestoes;
         $count = $this->numMaxQuestoes ($args);
         $numPag = ( $count % $num ) > 0 ? (int) ($count / $num) + 1 : ($count / $num) ;
@@ -121,7 +163,12 @@ class QuestionModel extends crud
             $questions_return = [
                 'questions' => $questions ];
         }
-        $this->message ($questions_return);
+        if (empty($questions)) {
+            $this->message(['aviso' => 'Nenhum pergunta retornada']);
+        } else {
+            $this->message ($questions_return);
+        }
+
     }
 
     private function numMaxQuestoes ($args) : int

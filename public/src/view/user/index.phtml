@@ -3,18 +3,29 @@
         <div class="col s12 m6">
             <p>Olá <strong><?=$_SESSION['username'];?></strong></p>
         </div>
-
-        <div class="input-field col s10">
-            <select id="assunto" name="assunto">
-                <option value="null" disabled selected>Escolha um assunto</option>
-            </select>
-            <label>Assunto</label>
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">search</i>Filtros</div>
+                    <div class="collapsible-body">
+                        <select id="assunto" name="assunto" class="col s12">
+                            <option value="null" disabled selected>Escolha um assunto</option>
+                        </select>
+                        <select id="banca" name="banca" class="col s12">
+                            <option value="null" disabled selected>Escolha uma banca</option>
+                        </select>
+                        <select id="cargo" name="cargo" class="col s12">
+                            <option value="null" disabled selected>Escolha um cargo</option>
+                        </select>
+                        <select id="disciplina" name="disciplina" class="col s12">
+                            <option value="null" disabled selected>Escolha uma disciplina</option>
+                        </select>
+                        <input placeholder="Filtro para perguntas" name="pergunta" type="text" id="pergunta" class="col s12">
+                        <button class="btn" onclick='getConteudo(1)'>Filtrar</button>
+                    </div>
+                </li>
+            </ul>
         </div>
-
-        <div class="input-field col s2">
-            <button class="btn" onclick='getConteudo(1)'>Filtrar</button>
-        </div>
-
         <div id="questoes" class="col s12">
 
         </div>
@@ -31,23 +42,98 @@
         $.getJSON( '<?= URL ?>/subjects', function( data ) {
             $.each( data, (key , value) => {
                 $('#assunto').append(new Option(value.assunto  , value.id));
-                $('#assunto_vf').append(new Option(value.assunto  , value.id))
             });
         }).fail(function(err){
             console.log(err)
         }).done(function(){
             $('#assunto').formSelect();
-            $('#assunto_vf').formSelect();
         });
+
+        $.getJSON( '<?= URL ?>/disciplines', function( data ) {
+            $.each( data, (key , value) => {
+                $('#disciplina').append(new Option(value.disciplina  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#disciplina').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/juries', function( data ) {
+            $.each( data, (key , value) => {
+                $('#banca').append(new Option(value.banca  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#banca').formSelect();
+        });
+
+        $.getJSON( '<?= URL ?>/roles', function( data ) {
+            $.each( data, (key , value) => {
+                $('#cargo').append(new Option(value.cargo  , value.id));
+            });
+        }).fail(function(err){
+            console.log(err)
+        }).done(function(){
+            $('#cargo').formSelect();
+        });
+
+        $('.collapsible').collapsible();
+
         getConteudo(1, null);
     });
 
     function getConteudo(page) {
-        var filter = $("#assunto").find("option:selected").val();
+        var filter = {
+            'assunto' :
+                (
+                    $("#assunto").find("option:selected").val() == 'null'
+                        ? null
+                        : 'id_subject=' + $("#assunto").find("option:selected").val()
+                ),
+            'banca' :
+                (
+                    $("#banca").find("option:selected").val() == 'null'
+                        ? null
+                        : 'id_jury=' + $("#banca").find("option:selected").val()
+                ),
+            'cargo' :
+                (
+                    $("#cargo").find("option:selected").val() == 'null'
+                        ? null
+                        : 'id_role=' + $("#cargo").find("option:selected").val()
+                ),
+            'disciplina' :
+                (
+                    $("#disciplina").find("option:selected").val() == 'null'
+                    ? null
+                    : 'id_discipline=' + $("#disciplina").find("option:selected").val()
+                ),
+            'pergunta' :
+                (
+                    $("#pergunta").val() === ''
+                        ? null
+                        : 'pergunta=' + $("#pergunta").val()
+                )
+        };
+
+        var filteractive = '';
+        $.each(filter, function( index, filters ) {
+            if (filteractive === '') {
+                if (filters != 'null') {
+                    filteractive += filters;
+                }
+            } else {
+                if (filters != null) {
+                    filteractive += '&' + filters;
+                }
+            }
+        });
+
         var url = '<?= URL ?>/questions/page/' + page;
-        if ( filter > 0 ){
-            url = '<?= URL ?>/questions/page/' + page + '?id_subject=' + filter;
-            filteractive = '?id_subject=' + filter;
+        if ( filteractive != null ){
+            url = '<?= URL ?>/questions/page/' + page + '?' + filteractive;
         }
         $.ajax({
             type: 'GET',
@@ -58,48 +144,52 @@
                 $('#paginacao').empty();
 
                 var pergunta = '';
-                $.each(response.questions, function( index, question ) {
-                    if (question.tipo == '1') {
-                        pergunta += '<ul class="collection with-header" id="'+ question.id +'">';
-                        pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
-                        $.each(question.respostas, function(index, value) {
-                            pergunta += '<li class="collection-item"><label><input type="radio" value="'+ value +'" name="'+ question.id +'"><span>'+ value +'</span></label></li>';
-                        });
-                        pergunta += '<li class="collection-item"><button class="btn" id="btn'+ question.id +'" onclick="resp('+ question.id +')">Responder</button></li>'
-                        pergunta += "</ul>";
-                    } else if (question.tipo == '2') {
-                        pergunta += '<ul class="collection with-header" id="'+ question.id +'">';
-                        pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
-                        pergunta += '<li class="collection-item"><label><input type="radio" value="Verdadeiro" name="'+ question.id +'"><span>Verdadeiro</span></label>';
-                        pergunta += '<label><input type="radio" value="Falso" name="'+ question.id +'"><span>Falso</span></label></li>';
-                        pergunta += '<li class="collection-item"><button class="btn" id="btn'+ question.id +'" onclick="resp('+ question.id +')">Responder</button></li>'
-                        pergunta += "</ul>";
-                    }
-                });
-                $('#questoes').append(pergunta);
+                if (response.aviso) {
+                    $('#questoes').append('<h3>' + response.aviso + '</h3>');
+                } else {
+                    $.each(response.questions, function (index, question) {
+                        if (question.tipo == '1') {
+                            pergunta += '<ul class="collection with-header" id="' + question.id + '">';
+                            pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
+                            $.each(question.respostas, function (index, value) {
+                                pergunta += '<li class="collection-item"><label><input type="radio" value="' + value + '" name="' + question.id + '"><span>' + value + '</span></label></li>';
+                            });
+                            pergunta += '<li class="collection-item"><button class="btn" id="btn' + question.id + '" onclick="resp(' + question.id + ')">Responder</button></li>'
+                            pergunta += "</ul>";
+                        } else if (question.tipo == '2') {
+                            pergunta += '<ul class="collection with-header" id="' + question.id + '">';
+                            pergunta += '<li class="collection-header"><p><strong>Pergunta: </strong>' + question.pergunta + '</p></li>';
+                            pergunta += '<li class="collection-item"><label><input type="radio" value="Verdadeiro" name="' + question.id + '"><span>Verdadeiro</span></label>';
+                            pergunta += '<label><input type="radio" value="Falso" name="' + question.id + '"><span>Falso</span></label></li>';
+                            pergunta += '<li class="collection-item"><button class="btn" id="btn' + question.id + '" onclick="resp(' + question.id + ')">Responder</button></li>'
+                            pergunta += "</ul>";
+                        }
+                    });
+                    $('#questoes').append(pergunta);
 
-                var pagination = '<ul class="pagination">';
-                if (response.pagination.pg_atual == 1) {
-                    pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
-                } else {
-                    var menos = response.pagination.pg_atual - 1;
-                    pagination += '<li class="waves-effect"><a onclick="getConteudo(' + menos + ')"><i class="material-icons">chevron_left</i></a></li>';
-                }
-                for ($i = 1; $i <= response.pagination.pages; $i++) {
-                    if ($i == response.pagination.pg_atual) {
-                        pagination += '<li class="active"><a href="#!">'+ $i + '</a></li>';
+                    var pagination = '<ul class="pagination">';
+                    if (response.pagination.pg_atual == 1) {
+                        pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
                     } else {
-                        pagination += '<li class="waves-effect"><a onclick="getConteudo(' + $i + ')">'+ $i + '</a></li>';
+                        var menos = response.pagination.pg_atual - 1;
+                        pagination += '<li class="waves-effect"><a onclick="getConteudo(' + menos + ')"><i class="material-icons">chevron_left</i></a></li>';
                     }
+                    for ($i = 1; $i <= response.pagination.pages; $i++) {
+                        if ($i == response.pagination.pg_atual) {
+                            pagination += '<li class="active"><a href="#!">' + $i + '</a></li>';
+                        } else {
+                            pagination += '<li class="waves-effect"><a onclick="getConteudo(' + $i + ')">' + $i + '</a></li>';
+                        }
+                    }
+                    if (response.pagination.pg_atual == response.pagination.pages) {
+                        pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                    } else {
+                        var mais = response.pagination.pg_atual + 1;
+                        pagination += '<li class="waves-effect"><a onclick="getConteudo(' + mais + ')"><i class="material-icons">chevron_right</i></a></li>';
+                    }
+                    pagination += '</ul>';
+                    $('#paginacao').append(pagination);
                 }
-                if (response.pagination.pg_atual == response.pagination.pages) {
-                    pagination += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-                } else {
-                    var mais = response.pagination.pg_atual + 1;
-                    pagination += '<li class="waves-effect"><a onclick="getConteudo(' + mais + ')"><i class="material-icons">chevron_right</i></a></li>';
-                }
-                pagination += '</ul>';
-                $('#paginacao').append(pagination);
             }
         });
     }
