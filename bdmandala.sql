@@ -11,6 +11,31 @@ create table user
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
+INSERT INTO user (
+                  login,
+                  pass,
+                  cpf,
+                  name,
+                  level
+                )
+VALUES (
+        'admin@admin.com',
+        '$2y$10$UtYSVGF2YWJ1sMWzcYBL3eMmOFUiYdaBbI/nuTBDIowS1MRL9ioJi',
+        '001.001.001-01',
+        'Admin',
+        1
+        );
+
+create table passrecovery
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    verificacao varchar(200) NOT NULL,
+    id_user int NOT NULL,
+    login varchar(100) NOT NULL,
+    created timestamp DEFAULT CURRENT_TIMESTAMP,
+    modified timestamp ON UPDATE CURRENT_TIMESTAMP
+);
+
 create table subject
 (
     id int PRIMARY KEY AUTO_INCREMENT,
@@ -52,16 +77,6 @@ create table exam
     id_discipline int NOT NULL REFERENCES discipline (id) ON DELETE CASCADE,
     id_subject int NOT NULL REFERENCES subject (id) ON DELETE CASCADE,
     simulado varchar(100) NOT NULL,
-    created timestamp DEFAULT CURRENT_TIMESTAMP,
-    modified timestamp ON UPDATE CURRENT_TIMESTAMP
-);
-
-create table passrecovery
-(
-    id int PRIMARY KEY AUTO_INCREMENT,
-    verificacao varchar(200) NOT NULL,
-    id_user int NOT NULL,
-    login varchar(100) NOT NULL,
     created timestamp DEFAULT CURRENT_TIMESTAMP,
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
