@@ -35,7 +35,7 @@ if(Auth::isAuth() OR Auth::isAuthHeader()) {
         SimpleRouter::get('/user/gerenciar', [Admin::class, 'userManager']);
         SimpleRouter::get ('/users', [User::class, 'list']);
         SimpleRouter::get('/user/editar/{id}', [User::class, 'prepareEdit'], ['where' => ['id' => '[0-9]+']]);
-        SimpleRouter::post ('/update-user', [User::class, 'update']);
+        SimpleRouter::put ('/update-user', [User::class, 'update']);
         SimpleRouter::post ('/delete-user', [User::class, 'delete']);
 
         /* Front */

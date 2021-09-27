@@ -63,18 +63,22 @@
         var area = $("#area").find("option:selected").val();
 
         var formData = JSON.stringify({ id: id, login: login, cpf: cpf, name: name, area: area });
-        var posting = $.post( "<?= URL . '/update-user' ?>", formData);
-        posting.done(function( data ) {
-            if (data.aviso == 'Registro salvo com sucesso') {
-                M.toast({html: data.aviso, classes: 'rounded'});
-                setTimeout(function() {
-                    window.location.href = "<?= URL ?>/user/gerenciar";
-                }, 2000);
+        $.ajax({
+            type: 'PUT',
+            url: "<?= URL . '/update-user'?>" ,
+            dataType: 'json',
+            data: formData,
+            success: function (response) {
+                if (response.aviso == 'Registro salvo com sucesso') {
+                    M.toast({html: response.aviso, classes: 'rounded'});
+                    setTimeout(function() {
+                        window.location.href = "<?= URL ?>/user/gerenciar";
+                    }, 2000);
 
-            } else {
-                M.toast({html: data, classes: 'rounded'});
+                } else {
+                    M.toast({html: response, classes: 'rounded'});
+                }
             }
-
         });
     });
 </script>

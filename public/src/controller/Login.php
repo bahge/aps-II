@@ -4,12 +4,14 @@ namespace aps\controller;
 
 if ( !isset($_SESSION) ) { session_start (); }
 
+use aps\appcore\JsonMsg;
 use aps\controller\main\Header;
 
 class Login
 {
     private string $name;
     private int $level;
+    use JsonMsg;
 
     public function loginPage(): void
     {
@@ -20,7 +22,7 @@ class Login
         include_once ( "src/view/main/footer.phtml" );
     }
 
-    public function getLoginData(): int
+    public function getLoginData(): void
     {
         $json = file_get_contents ('php://input');
         $data = json_decode ($json, true);
@@ -29,12 +31,14 @@ class Login
             $_SESSION['username'] = $this->name;
             $_SESSION['level'] = strval($this->level);
             if ($this->level > 0) {
-                return 2;
+                $this->message (['aviso'=> 'admin']);
+                exit;
             }
-            return 1;
+            $this->message (['aviso'=> 'usuário']);
+            exit;
         } else {
             unset($_SESSION['username']);
-            return 0;
+            $this->message (['aviso'=> 'Usuário ou senha inválidos']);
         }
     }
 

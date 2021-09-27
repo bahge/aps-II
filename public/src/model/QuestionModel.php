@@ -115,7 +115,11 @@ class QuestionModel extends crud
             $args = (is_null($args) ? '' : $args);
             $args .= " LIMIT {$num} OFFSET {$offset}";
         } else {
-            $args = null;
+            if (!empty($filters)) {
+                $args = 'WHERE ' . implode(' AND ', $filters );
+            } else {
+                $args = null;
+            }
             $paginacao = null;
         }
         $results = $this->crud->read (
