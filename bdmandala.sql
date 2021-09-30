@@ -11,6 +11,7 @@ create table user
     modified timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- criação do 1º usuário com nível de admin, para acesso com a senha 123
 INSERT INTO user (
                   login,
                   pass,
