@@ -46,11 +46,11 @@ class EmailModel extends crud
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
         $mail->SMTPDebug = SMTP::DEBUG_OFF;
-        $mail->Host = 'smtp.mailtrap.io';
-        $mail->Port = 25;
+        $mail->Host = getenv('MAILSMTP');
+        $mail->Port = getenv('MAILPORT');
         $mail->SMTPAuth = true;
-        $mail->Username = '70089107776daa';
-        $mail->Password = '37f77affd423bc';
+        $mail->Username = getenv('MAILUSER');
+        $mail->Username = getenv('MAILPASS');
         $mail->setFrom('recoverypass@mandala.com', 'Mandala Infor');
         $mail->addAddress($login, 'Usuário Mandala');
         $mail->Subject = 'Recuperação de senha - Mandala';
